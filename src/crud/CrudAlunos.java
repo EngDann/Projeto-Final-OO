@@ -5,15 +5,15 @@ import java.util.List;
 
 import app.Aluno;
 
-public class CadastroAluno {
-	int numAlunos; 
+public class CrudAlunos {
+	int numAlunos;
 	private List<Aluno> alunos;
-	
-	public CadastroAluno() {
+
+	public CrudAlunos() {
 		numAlunos = 0;
 		alunos = new ArrayList<Aluno>();
 	}
-	
+
 	public int cadastrarAluno(Aluno a) {
 		boolean cadastrou = alunos.add(a);
 		if (cadastrou) {
@@ -21,24 +21,24 @@ public class CadastroAluno {
 		}
 		return numAlunos;
 	}
-	
+
 	public Aluno pesquisarAluno(String matriculaAluno) {
-		for (Aluno a: alunos) {
+		for (Aluno a : alunos) {
 			if (a.getMatricula().equalsIgnoreCase(matriculaAluno)) {
 				return a;
 			}
 		}
 		return null;
 	}
-	
+
 	public boolean removerAluno(Aluno a) {
-		boolean removeu = false; 
+		boolean removeu = false;
 		if (alunos.contains(a)) {
 			removeu = alunos.remove(a);
 		}
 		return removeu;
 	}
-	
+
 	public boolean atualizarAluno(String matricula, Aluno a) {
 		boolean resposta = false;
 		Aluno remover = pesquisarAluno(matricula);
@@ -49,15 +49,3 @@ public class CadastroAluno {
 		return resposta;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
