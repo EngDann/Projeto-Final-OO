@@ -5,7 +5,7 @@
 -   **Universidade:** Universidade de Brasília (UnB)
 -   **Faculdade:** Faculdade do Gama (FGA)
 -   **Disciplina:** Orientação por Objetos (OO)
--   **Professor:** Prof. André Luiz Peron Martins Lanna
+-   **Professor:** André Luiz Peron Martins Lanna
 -   **Alunos:** Danilo de Melo Ribeiro, Ricardo Henrique Silva Rodrigues
 -   **Data de Entrega:** 12/08/2024
 
