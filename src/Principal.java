@@ -10,7 +10,8 @@ public class Principal {
 
 	public static void main(String[] args) {
 		cadAluno = new CrudAlunos();
-
+		cadProfessor - new CrudProfessor();
+		
 		int opcao = 0;
 
 		do {
@@ -20,7 +21,7 @@ public class Principal {
 					MenuAluno.menuAluno(cadAluno);
 					break;
 				case 2:
-					JOptionPane.showMessageDialog(null, "Cadastro de professores a ser implementado");
+					MenuProfessor.menuProfessor(cadProfessor);
 					break;
 				case 3:
 					JOptionPane.showMessageDialog(null, "Cadastro de disciplinas a ser implementado");
