@@ -1,43 +1,55 @@
 import javax.swing.JOptionPane;
 
-import cadastros.CadastroAlunos;
+import cadastros.CadastroAluno;
+import cadastros.CadastroProfessor;
+import cadastros.CrudDisciplina;
+import cadastros.CrudTurma;
 import view.MenuAluno;
+import view.MenuDisciplina;
+import view.MenuProfessor;
+import view.MenuTurma;
 import view.MenuPrincipal;
 
 public class Principal {
 
-	static CrudAlunos cadAluno;
-
+	static CadastroAluno cadAluno;
+	static CadastroProfessor cadProfessor;
+	static CrudTurma cadTurma;
+	static CrudDisciplina cadDisciplina;
+	
 	public static void main(String[] args) {
-		cadAluno = new CrudAlunos();
-		cadProfessor - new CrudProfessor();
+		cadAluno = new CadastroAluno();
+		cadProfessor = new CadastroProfessor();
+		cadDisciplina = new CrudDisciplina();
+		cadTurma = new CrudTurma();
 		
-		int opcao = 0;
-
+		int opcao = 0; 
+		
 		do {
-			opcao = MenuPrincipal.menuOpcoes();
+			opcao = MenuPrincipal.menuOpcoes(); 
 			switch (opcao) {
-				case 1:
-					MenuAluno.menuAluno(cadAluno);
-					break;
-				case 2:
+				case 1: 
+					MenuAluno.menuAluno(cadAluno); 
+				break;
+				case 2: 
 					MenuProfessor.menuProfessor(cadProfessor);
-					break;
-				case 3:
-					JOptionPane.showMessageDialog(null, "Cadastro de disciplinas a ser implementado");
-					break;
-				case 4:
-					JOptionPane.showMessageDialog(null, "Cadastro de turmas a ser implementado");
-					break;
-				case 0:
-					break;
-				default:
+				break;
+				case 3: 
+					MenuDisciplina.menuDisciplina(cadDisciplina);
+				break;
+				case 4: 
+					MenuTurma.menuTurma(cadTurma);
+				break;
+				case 0: 
+				break;
+				default: 
 					JOptionPane.showMessageDialog(null, "Opcao invalida");
 					opcao = -1;
-					break;
+				break;
 			}
 		} while (opcao != 0);
 		return;
 	}
+
 
 }
