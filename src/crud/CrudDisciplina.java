@@ -10,8 +10,8 @@ public class CrudDisciplina {
 	private List<Disciplina> disciplinas;
 
 	public CrudDisciplina() {
-		numDisc = 0;
-		disciplinas = new ArrayList<>();
+		this.numDisc = 0;
+		this.disciplinas = new ArrayList<>();
 	}
 
 	public int cadastrarDisciplina(Disciplina d) {

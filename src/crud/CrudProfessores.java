@@ -2,16 +2,15 @@ package crud;
 
 import java.util.List;
 import java.util.ArrayList;
-
 import app.Professor;
 
 public class CrudProfessores {
-	int numProf;
+	private int numProf;
 	private List<Professor> professores;
 
 	public CrudProfessores() {
-		numProf = 0;
-		professores = new ArrayList<Professor>();
+		this.numProf = 0;
+		this.professores = new ArrayList<>();
 	}
 
 	public int cadastrarProfessor(Professor p) {
@@ -23,28 +22,26 @@ public class CrudProfessores {
 	}
 
 	public Professor pesquisarProfessor(String matriculaFUB) {
-		Professor pesquisar = null;
 		for (Professor p : professores) {
 			if (p.getMatriculaFUB().equalsIgnoreCase(matriculaFUB)) {
 				return p;
 			}
 		}
-		return pesquisar;
+		return null;
 	}
 
 	public boolean removerProfessor(Professor p) {
-		boolean removeu = false;
-		if (professores.contains(p)) {
-			removeu = professores.remove(p);
+		boolean removeu = professores.remove(p);
+		if (removeu) {
 			numProf = professores.size();
 		}
 		return removeu;
 	}
 
-	public boolean atualizarProfessor(String matriculaFUB, Professor p) {
-		for (Professor atualizar : professores) {
-			if (atualizar.getMatriculaFUB().equalsIgnoreCase(matriculaFUB)) {
-				atualizar = p;
+	public boolean atualizarProfessor(String matriculaFUB, Professor novoProfessor) {
+		for (int i = 0; i < professores.size(); i++) {
+			if (professores.get(i).getMatriculaFUB().equalsIgnoreCase(matriculaFUB)) {
+				professores.set(i, novoProfessor);
 				return true;
 			}
 		}

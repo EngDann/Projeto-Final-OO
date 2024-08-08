@@ -1,34 +1,33 @@
 package app;
 
-public class Aluno extends PessoaFisica{
+public class Aluno extends PessoaFisica {
 
-	String matricula, 
-	       curso;
-	
+	private String matricula, curso;
+
 	public Aluno(String nome, String cpf, String email, String matricula, String curso) {
 		super(nome, cpf, email);
 		this.matricula = matricula;
 		this.curso = curso;
 	}
 
-	public final String getMatricula() {
+	public String getMatricula() {
 		return matricula;
 	}
 
-	public final String getCurso() {
+	public String getCurso() {
 		return curso;
 	}
-	
-	
+
+	@Override
 	protected void finalize() throws Throwable {
 		System.out.println("Destruindo objeto: " + this);
 	}
-	
+
+	@Override
 	public String toString() {
 		String resposta = super.toString();
 		resposta += "MATRICULA: " + matricula + '\n';
 		resposta += "CURSO: " + curso + '\n';
 		return resposta;
 	}
-
 }
