@@ -1,5 +1,4 @@
 import javax.swing.JOptionPane;
-
 import crud.CrudAlunos;
 import crud.CrudProfessores;
 import crud.CrudDisciplina;
@@ -9,7 +8,6 @@ import view.MenuDisciplina;
 import view.MenuProfessor;
 import view.MenuTurma;
 import view.MenuPrincipal;
-import view.MenuProfessor;
 
 public class Principal {
 
@@ -22,7 +20,7 @@ public class Principal {
 		crudAluno = new CrudAlunos();
 		crudProfessor = new CrudProfessores();
 		crudDisciplina = new CrudDisciplina();
-		crudTurma = new CrudTurma();
+		crudTurma = new CrudTurma(crudAluno, crudProfessor, crudDisciplina);
 
 		int opcao = 0;
 

@@ -1,17 +1,17 @@
 package crud;
 
 import java.util.List;
-import java.util.LinkedList;
-
+import java.util.ArrayList;
 import app.Disciplina;
+import app.Turma;
 
 public class CrudDisciplina {
-	int numDisc;
+	private int numDisc;
 	private List<Disciplina> disciplinas;
 
 	public CrudDisciplina() {
 		numDisc = 0;
-		disciplinas = new LinkedList<Disciplina>();
+		disciplinas = new ArrayList<>();
 	}
 
 	public int cadastrarDisciplina(Disciplina d) {
@@ -20,33 +20,41 @@ public class CrudDisciplina {
 			numDisc = disciplinas.size();
 		}
 		return numDisc;
-	}// APARENTEMENTE ESSE METODO CADASTRA CORRETAMENTE
+	}
 
 	public Disciplina pesquisarDisciplina(String codigo) {
-		Disciplina pesquisar = null;
 		for (Disciplina d : disciplinas) {
 			if (d.getCodigo().equalsIgnoreCase(codigo)) {
-				return pesquisar;
+				return d;
 			}
 		}
-		return pesquisar;
-	}// MAS AQUI ELE DA NULL POINTER EXCEPTION
+		return null;
+	}
 
 	public boolean removerDisciplina(Disciplina d) {
-		boolean removeu = false;
-		if (disciplinas.contains(d)) {
-			removeu = disciplinas.remove(d);
+		boolean removeu = disciplinas.remove(d);
+		if (removeu) {
 			numDisc = disciplinas.size();
 		}
 		return removeu;
 	}
 
-	public boolean atualizarDisciplina(String codigo, Disciplina d) {
-		for (Disciplina atualizar : disciplinas) {
-			if (atualizar.getCodigo().equalsIgnoreCase(codigo)) {
-				atualizar = d;
+	public boolean atualizarDisciplina(String codigo, Disciplina novaDisciplina) {
+		for (int i = 0; i < disciplinas.size(); i++) {
+			if (disciplinas.get(i).getCodigo().equalsIgnoreCase(codigo)) {
+				disciplinas.set(i, novaDisciplina);
 				return true;
 			}
+		}
+		return false;
+	}
+
+	public boolean adicionarTurma(String codigoDisciplina, Turma turma) {
+		Disciplina disciplina = pesquisarDisciplina(codigoDisciplina);
+		if (disciplina != null) {
+			disciplina.getTurmas().add(turma);
+			turma.setDisciplina(disciplina);
+			return true;
 		}
 		return false;
 	}

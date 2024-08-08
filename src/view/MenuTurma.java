@@ -30,14 +30,19 @@ public class MenuTurma {
 		return JOptionPane.showInputDialog("Informe o codigo da disciplina: ");
 	}
 
-	public static void menuTurma(CrudTurma cadTurma) {
+	private static String lerMatriculaALuno() {
+		return JOptionPane.showInputDialog("Informe a matricula do aluno: ");
+	}
+
+	public static void menuTurma(CrudTurma crudTurma) {
 		String txt = "Informe a opção desejada \n"
 				+ "1 - Criar turma\n"
 				+ "2 - Pesquisar Turma\n"
 				+ "3 - Atualizar turma\n"
 				+ "4 - Associar professor\n"
 				+ "5 - Associar disciplina\n"
-				+ "6 - Remover turma\n"
+				+ "6 - Associar aluno\n"
+				+ "7 - Remover turma\n"
 				+ "0 - Voltar para menu anterior";
 
 		int opcao = -1;
@@ -48,12 +53,12 @@ public class MenuTurma {
 			switch (opcao) {
 				case 1:
 					Turma novaTurma = dadosNovaTurma();
-					cadTurma.cadastrarTurma(novaTurma);
+					crudTurma.cadastrarTurma(novaTurma);
 					break;
 
 				case 2:
 					String codigo = lerCodigoTurma();
-					Turma t = cadTurma.pesquisarTurma(codigo);
+					Turma t = crudTurma.pesquisarTurma(codigo);
 					if (t != null)
 						JOptionPane.showMessageDialog(null, t.toString());
 					break;
@@ -61,7 +66,7 @@ public class MenuTurma {
 				case 3:
 					codigo = lerCodigoTurma();
 					Turma novoCadastro = dadosNovaTurma();
-					boolean atualizado = cadTurma.atualizarTurma(codigo, novoCadastro);
+					boolean atualizado = crudTurma.atualizarTurma(codigo, novoCadastro);
 					if (atualizado) {
 						JOptionPane.showMessageDialog(null, "Turma atualizada.");
 					}
@@ -70,8 +75,8 @@ public class MenuTurma {
 				case 4:
 					String matFUB = lerMatriculaProf();
 					codigo = lerCodigoTurma();
-					t = cadTurma.pesquisarTurma(codigo);
-					boolean adicionou = cadTurma.adicionarProfessor(matFUB, t);
+					t = crudTurma.pesquisarTurma(codigo);
+					boolean adicionou = crudTurma.adicionarProfessor(matFUB, t);
 					if (adicionou) {
 						JOptionPane.showMessageDialog(null, "Professor designado.");
 					}
@@ -80,20 +85,30 @@ public class MenuTurma {
 				case 5:
 					String codigoDisciplina = lerCodigoDisciplina();
 					codigo = lerCodigoTurma();
-					t = cadTurma.pesquisarTurma(codigo);
-					adicionou = cadTurma.adicionarDisciplina(codigoDisciplina, t);
+					t = crudTurma.pesquisarTurma(codigo);
+					adicionou = crudTurma.adicionarDisciplina(codigoDisciplina, t);
 					if (adicionou) {
 						JOptionPane.showMessageDialog(null, "Disciplina designada.");
 					}
+					break;
 				case 6:
+					String matAluno = lerMatriculaALuno();
 					codigo = lerCodigoTurma();
-					Turma remover = cadTurma.pesquisarTurma(codigo);
-					boolean removido = cadTurma.removerTurma(remover);
+					t = crudTurma.pesquisarTurma(codigo);
+					adicionou = crudTurma.adicionarAluno(matAluno, t);
+					if (adicionou) {
+						JOptionPane.showMessageDialog(null, "Aluno designado.");
+					}
+					break;
+
+				case 7:
+					codigo = lerCodigoTurma();
+					Turma remover = crudTurma.pesquisarTurma(codigo);
+					boolean removido = crudTurma.removerTurma(remover);
 					if (removido) {
-						JOptionPane.showMessageDialog(null, "Turma removida do cadastro");
+						JOptionPane.showMessageDialog(null, "Turma removida do crudastro");
 						System.gc();
 					}
-
 				default:
 					break;
 			}

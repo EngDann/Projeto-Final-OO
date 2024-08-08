@@ -7,8 +7,8 @@ public class Turma {
     private String codigo;
     private int qtdVagas;
     private int qtdVagasLivres;
-    private Professor professorAssociado;
     private List<Aluno> alunosMatriculados;
+    private Professor professorAssociado;
     private Disciplina disciplina;
 
     public Turma(String codigo, int qtdVagas) {
