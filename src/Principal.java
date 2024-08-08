@@ -1,27 +1,30 @@
 import javax.swing.JOptionPane;
 
-import cadastros.CadastroAlunos;
+import crud.CrudAlunos;
+import crud.CrudProfessores;
 import view.MenuAluno;
 import view.MenuPrincipal;
+import view.MenuProfessor;
 
 public class Principal {
 
-	static CrudAlunos cadAluno;
+	static CrudAlunos crudAluno;
+	static CrudProfessores crudProfessor;
 
 	public static void main(String[] args) {
-		cadAluno = new CrudAlunos();
-		cadProfessor - new CrudProfessor();
-		
+		crudAluno = new CrudAlunos();
+		crudProfessor = new CrudProfessores();
+
 		int opcao = 0;
 
 		do {
 			opcao = MenuPrincipal.menuOpcoes();
 			switch (opcao) {
 				case 1:
-					MenuAluno.menuAluno(cadAluno);
+					MenuAluno.menuAluno(crudAluno);
 					break;
 				case 2:
-					MenuProfessor.menuProfessor(cadProfessor);
+					MenuProfessor.menuProfessor(crudProfessor);
 					break;
 				case 3:
 					JOptionPane.showMessageDialog(null, "Cadastro de disciplinas a ser implementado");

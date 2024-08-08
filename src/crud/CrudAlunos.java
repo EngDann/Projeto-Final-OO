@@ -1,4 +1,4 @@
-package cadastros;
+package crud;
 
 import java.util.ArrayList;
 import java.util.List;

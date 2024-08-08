@@ -1,4 +1,4 @@
-package cadastros;
+package crud;
 
 public class CrudTurmas {
 
