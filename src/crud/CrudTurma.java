@@ -1,7 +1,6 @@
 package crud;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import app.Professor;
 import app.Disciplina;
@@ -11,14 +10,16 @@ import app.Turma;
 public class CrudTurma {
     private int numTurmas;
     private List<Turma> turmas;
+    private CrudAlunos crudAluno;
+    private CrudProfessores crudProfessor;
+    private CrudDisciplina crudDisciplina;
 
-    private static CrudAlunos crudAluno;
-    private static CrudProfessores crudProfessor;
-    private static CrudDisciplina crudDisciplina;
-
-    public CrudTurma() {
+    public CrudTurma(CrudAlunos crudAluno, CrudProfessores crudProfessor, CrudDisciplina crudDisciplina) {
         numTurmas = 0;
-        turmas = new LinkedList<>();
+        turmas = new ArrayList<>();
+        this.crudAluno = crudAluno;
+        this.crudProfessor = crudProfessor;
+        this.crudDisciplina = crudDisciplina;
     }
 
     public int cadastrarTurma(Turma turma) {
@@ -85,6 +86,6 @@ public class CrudTurma {
     }
 
     public void listaDePresenca() {
-
+        // Implementar lógica de lista de presença
     }
 }
