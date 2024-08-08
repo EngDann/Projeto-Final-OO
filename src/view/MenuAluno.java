@@ -1,58 +1,59 @@
 package view;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.awt.*;
 import app.Aluno;
 import crud.CrudAlunos;
 
 public class MenuAluno {
 
 	public static Aluno dadosNovoAluno() {
-		String nome = lerNome();
-		String cpf = lerCPF();
-		String email = lerEmail();
-		String matricula = lerMatricula();
-		String curso = lerCurso();
-		return new Aluno(nome, cpf, email, matricula, curso);
-	}
+		JPanel panel = new JPanel(new GridLayout(0, 2));
 
-	private static String lerCurso() {
-		String curso;
-		do {
-			curso = JOptionPane.showInputDialog("Informe o curso do aluno: ");
-		} while (curso == null || curso.trim().isEmpty());
-		return curso;
-	}
+		panel.add(new JLabel("Informe o nome do aluno:"));
+		JTextField nomeField = new JTextField();
+		panel.add(nomeField);
 
-	private static String lerEmail() {
-		String email;
-		do {
-			email = JOptionPane.showInputDialog("Informe o email do aluno: ");
-		} while (email == null || email.trim().isEmpty());
-		return email;
-	}
+		panel.add(new JLabel("Informe o CPF do aluno:"));
+		JTextField cpfField = new JTextField();
+		panel.add(cpfField);
 
-	private static String lerCPF() {
-		String cpf;
-		do {
-			cpf = JOptionPane.showInputDialog("Informe o CPF do aluno: ");
-		} while (cpf == null || cpf.trim().isEmpty());
-		return cpf;
-	}
+		panel.add(new JLabel("Informe o email do aluno:"));
+		JTextField emailField = new JTextField();
+		panel.add(emailField);
 
-	private static String lerNome() {
-		String nome;
-		do {
-			nome = JOptionPane.showInputDialog("Informe o nome do aluno: ");
-		} while (nome == null || nome.trim().isEmpty());
-		return nome;
-	}
+		panel.add(new JLabel("Informe a matricula do aluno:"));
+		JTextField matriculaField = new JTextField();
+		panel.add(matriculaField);
 
-	private static String lerMatricula() {
-		String matricula;
+		panel.add(new JLabel("Informe o curso do aluno:"));
+		JTextField cursoField = new JTextField();
+		panel.add(cursoField);
+
+		int result;
 		do {
-			matricula = JOptionPane.showInputDialog("Informe a matricula do aluno: ");
-		} while (matricula == null || matricula.trim().isEmpty());
-		return matricula;
+			result = JOptionPane.showConfirmDialog(null, panel, "Cadastro de Novo Aluno", JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.PLAIN_MESSAGE);
+
+			if (result == JOptionPane.OK_OPTION) {
+				String nome = nomeField.getText().trim();
+				String cpf = cpfField.getText().trim();
+				String email = emailField.getText().trim();
+				String matricula = matriculaField.getText().trim();
+				String curso = cursoField.getText().trim();
+
+				if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || matricula.isEmpty() || curso.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Todos os campos devem ser preenchidos.", "Erro",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					return new Aluno(nome, cpf, email, matricula, curso);
+				}
+			} else {
+				return null;
+			}
+		} while (result == JOptionPane.OK_OPTION);
+
+		return null;
 	}
 
 	public static void menuAluno(CrudAlunos cadAluno) {
@@ -77,44 +78,60 @@ public class MenuAluno {
 				switch (opcao) {
 					case 1:
 						Aluno novoAluno = dadosNovoAluno();
-						cadAluno.cadastrarAluno(novoAluno);
-						JOptionPane.showMessageDialog(null, "Aluno cadastrado com sucesso!");
+						if (novoAluno != null) {
+							cadAluno.cadastrarAluno(novoAluno);
+							JOptionPane.showMessageDialog(null, "Aluno cadastrado com sucesso!");
+						}
 						break;
 
 					case 2:
-						String matricula = lerMatricula();
-						Aluno a = cadAluno.pesquisarAluno(matricula);
-						if (a != null) {
-							JOptionPane.showMessageDialog(null, a.toString());
+						String matricula = JOptionPane.showInputDialog("Informe a matricula do aluno:");
+						if (matricula != null && !matricula.trim().isEmpty()) {
+							Aluno a = cadAluno.pesquisarAluno(matricula.trim());
+							if (a != null) {
+								JOptionPane.showMessageDialog(null, a.toString());
+							} else {
+								JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
+							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
+							JOptionPane.showMessageDialog(null, "Matricula não pode ser vazia.");
 						}
 						break;
 
 					case 3:
-						matricula = lerMatricula();
-						Aluno novoCadastro = dadosNovoAluno();
-						boolean atualizado = cadAluno.atualizarAluno(matricula, novoCadastro);
-						if (atualizado) {
-							JOptionPane.showMessageDialog(null, "Cadastro atualizado.");
+						matricula = JOptionPane.showInputDialog("Informe a matricula do aluno:");
+						if (matricula != null && !matricula.trim().isEmpty()) {
+							Aluno novoCadastro = dadosNovoAluno();
+							if (novoCadastro != null) {
+								boolean atualizado = cadAluno.atualizarAluno(matricula.trim(), novoCadastro);
+								if (atualizado) {
+									JOptionPane.showMessageDialog(null, "Cadastro atualizado.");
+								} else {
+									JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
+								}
+							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
+							JOptionPane.showMessageDialog(null, "Matricula não pode ser vazia.");
 						}
 						break;
 
 					case 4:
-						matricula = lerMatricula();
-						Aluno remover = cadAluno.pesquisarAluno(matricula);
-						if (remover != null) {
-							boolean removido = cadAluno.removerAluno(remover);
-							if (removido) {
-								JOptionPane.showMessageDialog(null, "Aluno removido do cadastro.");
-								System.gc();
+						matricula = JOptionPane.showInputDialog("Informe a matricula do aluno:");
+						if (matricula != null && !matricula.trim().isEmpty()) {
+							Aluno remover = cadAluno.pesquisarAluno(matricula.trim());
+							if (remover != null) {
+								boolean removido = cadAluno.removerAluno(remover);
+								if (removido) {
+									JOptionPane.showMessageDialog(null, "Aluno removido do cadastro.");
+									System.gc();
+								} else {
+									JOptionPane.showMessageDialog(null, "Erro ao remover aluno.");
+								}
 							} else {
-								JOptionPane.showMessageDialog(null, "Erro ao remover aluno.");
+								JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
 							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
+							JOptionPane.showMessageDialog(null, "Matricula não pode ser vazia.");
 						}
 						break;
 

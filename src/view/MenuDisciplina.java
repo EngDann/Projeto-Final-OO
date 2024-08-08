@@ -1,6 +1,7 @@
 package view;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.awt.*;
 import app.Disciplina;
 import app.Turma;
 import crud.CrudDisciplina;
@@ -9,55 +10,76 @@ import crud.CrudTurma;
 public class MenuDisciplina {
 
 	public static Disciplina dadosNovaDisciplina() {
-		String nome = lerNome();
-		String codigo = lerCodigo();
-		return new Disciplina(nome, codigo);
-	}
+		JPanel panel = new JPanel(new GridLayout(0, 2));
 
-	private static String lerCodigo() {
-		String codigo;
-		do {
-			codigo = JOptionPane.showInputDialog("Informe o código da disciplina: ");
-		} while (codigo == null || codigo.trim().isEmpty());
-		return codigo;
-	}
+		panel.add(new JLabel("Informe o nome da disciplina:"));
+		JTextField nomeField = new JTextField();
+		panel.add(nomeField);
 
-	private static String lerNome() {
-		String nome;
+		panel.add(new JLabel("Informe o código da disciplina:"));
+		JTextField codigoField = new JTextField();
+		panel.add(codigoField);
+
+		int result;
 		do {
-			nome = JOptionPane.showInputDialog("Informe o nome da disciplina: ");
-		} while (nome == null || nome.trim().isEmpty());
-		return nome;
+			result = JOptionPane.showConfirmDialog(null, panel, "Cadastro de Nova Disciplina",
+					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+			if (result == JOptionPane.OK_OPTION) {
+				String nome = nomeField.getText().trim();
+				String codigo = codigoField.getText().trim();
+
+				if (nome.isEmpty() || codigo.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Todos os campos devem ser preenchidos.", "Erro",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					return new Disciplina(nome, codigo);
+				}
+			} else {
+				return null;
+			}
+		} while (result == JOptionPane.OK_OPTION);
+
+		return null;
 	}
 
 	private static Turma dadosNovaTurma() {
-		String codigo = lerCodigoTurma();
-		int qtdVagas = lerQtdVagas();
-		return new Turma(codigo, qtdVagas);
-	}
+		JPanel panel = new JPanel(new GridLayout(0, 2));
 
-	private static String lerCodigoTurma() {
-		String codigo;
-		do {
-			codigo = JOptionPane.showInputDialog("Informe o código da turma: ");
-		} while (codigo == null || codigo.trim().isEmpty());
-		return codigo;
-	}
+		panel.add(new JLabel("Informe o código da turma:"));
+		JTextField codigoField = new JTextField();
+		panel.add(codigoField);
 
-	private static int lerQtdVagas() {
-		int qtdVagas = 0;
+		panel.add(new JLabel("Informe o número de vagas da turma:"));
+		JTextField qtdVagasField = new JTextField();
+		panel.add(qtdVagasField);
+
+		int result;
 		do {
-			String strNumVagas = JOptionPane.showInputDialog("Informe o número de vagas da turma: ");
-			try {
-				qtdVagas = Integer.parseInt(strNumVagas);
-				if (qtdVagas <= 0) {
-					JOptionPane.showMessageDialog(null, "Número de vagas deve ser maior que zero.");
+			result = JOptionPane.showConfirmDialog(null, panel, "Cadastro de Nova Turma", JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.PLAIN_MESSAGE);
+
+			if (result == JOptionPane.OK_OPTION) {
+				String codigo = codigoField.getText().trim();
+				int qtdVagas;
+				try {
+					qtdVagas = Integer.parseInt(qtdVagasField.getText().trim());
+					if (codigo.isEmpty() || qtdVagas <= 0) {
+						JOptionPane.showMessageDialog(null, "Todos os campos devem ser preenchidos corretamente.",
+								"Erro", JOptionPane.ERROR_MESSAGE);
+					} else {
+						return new Turma(codigo, qtdVagas);
+					}
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "Número de vagas deve ser um número válido.", "Erro",
+							JOptionPane.ERROR_MESSAGE);
 				}
-			} catch (NumberFormatException e) {
-				JOptionPane.showMessageDialog(null, "Entrada inválida. Por favor, insira um número.");
+			} else {
+				return null;
 			}
-		} while (qtdVagas <= 0);
-		return qtdVagas;
+		} while (result == JOptionPane.OK_OPTION);
+
+		return null;
 	}
 
 	public static void menuDisciplina(CrudDisciplina cadDisciplina, CrudTurma cadTurma) {
@@ -84,74 +106,100 @@ public class MenuDisciplina {
 				switch (opcao) {
 					case 1:
 						Disciplina novaDisciplina = dadosNovaDisciplina();
-						cadDisciplina.cadastrarDisciplina(novaDisciplina);
-						JOptionPane.showMessageDialog(null, "Disciplina cadastrada com sucesso!");
+						if (novaDisciplina != null) {
+							cadDisciplina.cadastrarDisciplina(novaDisciplina);
+							JOptionPane.showMessageDialog(null, "Disciplina cadastrada com sucesso!");
+						}
 						break;
 
 					case 2:
-						String codigo = lerCodigo();
-						Disciplina d = cadDisciplina.pesquisarDisciplina(codigo);
-						if (d != null) {
-							JOptionPane.showMessageDialog(null, d.toString());
+						String codigo = JOptionPane.showInputDialog("Informe o código da disciplina:");
+						if (codigo != null && !codigo.trim().isEmpty()) {
+							Disciplina d = cadDisciplina.pesquisarDisciplina(codigo.trim());
+							if (d != null) {
+								JOptionPane.showMessageDialog(null, d.toString());
+							} else {
+								JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
+							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
+							JOptionPane.showMessageDialog(null, "Código da disciplina não pode ser vazio.");
 						}
 						break;
 
 					case 3:
-						codigo = lerCodigo();
-						Disciplina novoCadastro = dadosNovaDisciplina();
-						boolean atualizado = cadDisciplina.atualizarDisciplina(codigo, novoCadastro);
-						if (atualizado) {
-							JOptionPane.showMessageDialog(null, "Disciplina atualizada.");
+						codigo = JOptionPane.showInputDialog("Informe o código da disciplina:");
+						if (codigo != null && !codigo.trim().isEmpty()) {
+							Disciplina novoCadastro = dadosNovaDisciplina();
+							if (novoCadastro != null) {
+								boolean atualizado = cadDisciplina.atualizarDisciplina(codigo.trim(), novoCadastro);
+								if (atualizado) {
+									JOptionPane.showMessageDialog(null, "Disciplina atualizada.");
+								} else {
+									JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
+								}
+							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
+							JOptionPane.showMessageDialog(null, "Código da disciplina não pode ser vazio.");
 						}
 						break;
 
 					case 4:
-						codigo = lerCodigo();
-						Disciplina remover = cadDisciplina.pesquisarDisciplina(codigo);
-						if (remover != null) {
-							boolean removido = cadDisciplina.removerDisciplina(remover);
-							if (removido) {
-								JOptionPane.showMessageDialog(null, "Disciplina removida do catálogo.");
+						codigo = JOptionPane.showInputDialog("Informe o código da disciplina:");
+						if (codigo != null && !codigo.trim().isEmpty()) {
+							Disciplina remover = cadDisciplina.pesquisarDisciplina(codigo.trim());
+							if (remover != null) {
+								boolean removido = cadDisciplina.removerDisciplina(remover);
+								if (removido) {
+									JOptionPane.showMessageDialog(null, "Disciplina removida do catálogo.");
+								} else {
+									JOptionPane.showMessageDialog(null, "Erro ao remover disciplina.");
+								}
 							} else {
-								JOptionPane.showMessageDialog(null, "Erro ao remover disciplina.");
+								JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
 							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
+							JOptionPane.showMessageDialog(null, "Código da disciplina não pode ser vazio.");
 						}
 						break;
 
 					case 5:
-						codigo = lerCodigo();
-						Disciplina disciplina = cadDisciplina.pesquisarDisciplina(codigo);
-						if (disciplina != null) {
-							StringBuilder turmasStr = new StringBuilder();
-							for (Turma turma : disciplina.getTurmas()) {
-								turmasStr.append(turma.toString()).append("\n");
+						codigo = JOptionPane.showInputDialog("Informe o código da disciplina:");
+						if (codigo != null && !codigo.trim().isEmpty()) {
+							Disciplina disciplina = cadDisciplina.pesquisarDisciplina(codigo.trim());
+							if (disciplina != null) {
+								StringBuilder turmasStr = new StringBuilder();
+								for (Turma turma : disciplina.getTurmas()) {
+									turmasStr.append(turma.toString()).append("\n");
+								}
+								JOptionPane.showMessageDialog(null, turmasStr.toString());
+							} else {
+								JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
 							}
-							JOptionPane.showMessageDialog(null, turmasStr.toString());
 						} else {
-							JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
+							JOptionPane.showMessageDialog(null, "Código da disciplina não pode ser vazio.");
 						}
 						break;
 
 					case 6:
-						codigo = lerCodigo();
-						disciplina = cadDisciplina.pesquisarDisciplina(codigo);
-						if (disciplina != null) {
-							Turma novaTurma = dadosNovaTurma();
-							cadTurma.cadastrarTurma(novaTurma); // Primeiro, adiciona à lista geral de turmas
-							boolean adicionou = cadDisciplina.adicionarTurma(codigo, novaTurma);
-							if (adicionou) {
-								JOptionPane.showMessageDialog(null, "Turma adicionada à disciplina.");
+						codigo = JOptionPane.showInputDialog("Informe o código da disciplina:");
+						if (codigo != null && !codigo.trim().isEmpty()) {
+							Disciplina disciplina = cadDisciplina.pesquisarDisciplina(codigo.trim());
+							if (disciplina != null) {
+								Turma novaTurma = dadosNovaTurma();
+								if (novaTurma != null) {
+									cadTurma.cadastrarTurma(novaTurma); // Primeiro, adiciona à lista geral de turmas
+									boolean adicionou = cadDisciplina.adicionarTurma(codigo.trim(), novaTurma);
+									if (adicionou) {
+										JOptionPane.showMessageDialog(null, "Turma adicionada à disciplina.");
+									} else {
+										JOptionPane.showMessageDialog(null, "Erro ao adicionar turma à disciplina.");
+									}
+								}
 							} else {
-								JOptionPane.showMessageDialog(null, "Erro ao adicionar turma à disciplina.");
+								JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
 							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
+							JOptionPane.showMessageDialog(null, "Código da disciplina não pode ser vazio.");
 						}
 						break;
 
