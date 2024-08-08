@@ -3,7 +3,7 @@ package view;
 import javax.swing.JOptionPane;
 
 import app.Aluno;
-import cadastros.CadastroAlunos;
+import crud.CrudAlunos;
 
 public class MenuAluno {
 
