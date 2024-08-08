@@ -1,19 +1,28 @@
 import javax.swing.JOptionPane;
 
-import crud.CrudAlunos;
-import crud.CrudProfessores;
+import cadastros.CadastroAluno;
+import cadastros.CadastroProfessor;
+import cadastros.CrudDisciplina;
+import cadastros.CrudTurma;
 import view.MenuAluno;
+import view.MenuDisciplina;
+import view.MenuProfessor;
+import view.MenuTurma;
 import view.MenuPrincipal;
 import view.MenuProfessor;
 
 public class Principal {
 
-	static CrudAlunos crudAluno;
-	static CrudProfessores crudProfessor;
+	static CadastroAluno cadAluno;
+	static CadastroProfessor cadProfessor;
+	static CrudTurma cadTurma;
+	static CrudDisciplina cadDisciplina;
 
 	public static void main(String[] args) {
-		crudAluno = new CrudAlunos();
-		crudProfessor = new CrudProfessores();
+		cadAluno = new CadastroAluno();
+		cadProfessor = new CadastroProfessor();
+		cadDisciplina = new CrudDisciplina();
+		cadTurma = new CrudTurma();
 
 		int opcao = 0;
 
@@ -21,16 +30,16 @@ public class Principal {
 			opcao = MenuPrincipal.menuOpcoes();
 			switch (opcao) {
 				case 1:
-					MenuAluno.menuAluno(crudAluno);
+					MenuAluno.menuAluno(cadAluno);
 					break;
 				case 2:
-					MenuProfessor.menuProfessor(crudProfessor);
+					MenuProfessor.menuProfessor(cadProfessor);
 					break;
 				case 3:
-					JOptionPane.showMessageDialog(null, "Cadastro de disciplinas a ser implementado");
+					MenuDisciplina.menuDisciplina(cadDisciplina);
 					break;
 				case 4:
-					JOptionPane.showMessageDialog(null, "Cadastro de turmas a ser implementado");
+					MenuTurma.menuTurma(cadTurma);
 					break;
 				case 0:
 					break;
