@@ -3,17 +3,19 @@ package app;
 import java.util.List;
 
 public class Turma {
-    int codigo;
+    String codigo;
+    Disciplina disciplina;
     Professor professor;
     List<Aluno> alunos;
 
-    public Turma(int codigo, Professor professor, List<Aluno> alunos) {
+    public Turma(String codigo, Disciplina disciplina, Professor professor, List<Aluno> alunos) {
         this.codigo = codigo;
+        this.disciplina = disciplina;
         this.professor = professor;
         this.alunos = alunos;
     }
 
-    public int getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
