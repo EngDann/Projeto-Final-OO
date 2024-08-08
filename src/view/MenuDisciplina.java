@@ -2,7 +2,9 @@ package view;
 
 import javax.swing.JOptionPane;
 import app.Disciplina;
+import app.Turma;
 import crud.CrudDisciplina;
+import crud.CrudTurma;
 
 public class MenuDisciplina {
 
@@ -15,7 +17,7 @@ public class MenuDisciplina {
 	private static String lerCodigo() {
 		String codigo;
 		do {
-			codigo = JOptionPane.showInputDialog("Informe o codigo da disciplina: ");
+			codigo = JOptionPane.showInputDialog("Informe o código da disciplina: ");
 		} while (codigo == null || codigo.trim().isEmpty());
 		return codigo;
 	}
@@ -28,12 +30,44 @@ public class MenuDisciplina {
 		return nome;
 	}
 
-	public static void menuDisciplina(CrudDisciplina cadDisciplina) {
+	private static Turma dadosNovaTurma() {
+		String codigo = lerCodigoTurma();
+		int qtdVagas = lerQtdVagas();
+		return new Turma(codigo, qtdVagas);
+	}
+
+	private static String lerCodigoTurma() {
+		String codigo;
+		do {
+			codigo = JOptionPane.showInputDialog("Informe o código da turma: ");
+		} while (codigo == null || codigo.trim().isEmpty());
+		return codigo;
+	}
+
+	private static int lerQtdVagas() {
+		int qtdVagas = 0;
+		do {
+			String strNumVagas = JOptionPane.showInputDialog("Informe o número de vagas da turma: ");
+			try {
+				qtdVagas = Integer.parseInt(strNumVagas);
+				if (qtdVagas <= 0) {
+					JOptionPane.showMessageDialog(null, "Número de vagas deve ser maior que zero.");
+				}
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null, "Entrada inválida. Por favor, insira um número.");
+			}
+		} while (qtdVagas <= 0);
+		return qtdVagas;
+	}
+
+	public static void menuDisciplina(CrudDisciplina cadDisciplina, CrudTurma cadTurma) {
 		String txt = "Informe a opção desejada \n"
 				+ "1 - Cadastrar disciplina\n"
 				+ "2 - Pesquisar disciplina\n"
 				+ "3 - Atualizar disciplina\n"
 				+ "4 - Remover disciplina\n"
+				+ "5 - Listar turmas da disciplina\n"
+				+ "6 - Adicionar turma à disciplina\n"
 				+ "0 - Voltar para menu anterior";
 
 		int opcao = -1;
@@ -84,6 +118,37 @@ public class MenuDisciplina {
 								JOptionPane.showMessageDialog(null, "Disciplina removida do catálogo.");
 							} else {
 								JOptionPane.showMessageDialog(null, "Erro ao remover disciplina.");
+							}
+						} else {
+							JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
+						}
+						break;
+
+					case 5:
+						codigo = lerCodigo();
+						Disciplina disciplina = cadDisciplina.pesquisarDisciplina(codigo);
+						if (disciplina != null) {
+							StringBuilder turmasStr = new StringBuilder();
+							for (Turma turma : disciplina.getTurmas()) {
+								turmasStr.append(turma.toString()).append("\n");
+							}
+							JOptionPane.showMessageDialog(null, turmasStr.toString());
+						} else {
+							JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
+						}
+						break;
+
+					case 6:
+						codigo = lerCodigo();
+						disciplina = cadDisciplina.pesquisarDisciplina(codigo);
+						if (disciplina != null) {
+							Turma novaTurma = dadosNovaTurma();
+							cadTurma.cadastrarTurma(novaTurma); // Primeiro, adiciona à lista geral de turmas
+							boolean adicionou = cadDisciplina.adicionarTurma(codigo, novaTurma);
+							if (adicionou) {
+								JOptionPane.showMessageDialog(null, "Turma adicionada à disciplina.");
+							} else {
+								JOptionPane.showMessageDialog(null, "Erro ao adicionar turma à disciplina.");
 							}
 						} else {
 							JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");

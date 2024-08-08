@@ -34,7 +34,7 @@ public class Principal {
 					MenuProfessor.menuProfessor(crudProfessor);
 					break;
 				case 3:
-					MenuDisciplina.menuDisciplina(crudDisciplina);
+					MenuDisciplina.menuDisciplina(crudDisciplina, crudTurma);
 					break;
 				case 4:
 					MenuTurma.menuTurma(crudTurma);
@@ -49,5 +49,4 @@ public class Principal {
 		} while (opcao != 0);
 		return;
 	}
-
 }

@@ -52,7 +52,7 @@ public class CrudDisciplina {
 	public boolean adicionarTurma(String codigoDisciplina, Turma turma) {
 		Disciplina disciplina = pesquisarDisciplina(codigoDisciplina);
 		if (disciplina != null) {
-			disciplina.getTurmas().add(turma);
+			disciplina.adicionarTurma(turma);
 			turma.setDisciplina(disciplina);
 			return true;
 		}

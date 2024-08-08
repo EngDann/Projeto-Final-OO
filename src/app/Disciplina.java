@@ -26,9 +26,17 @@ public class Disciplina {
         return turmas;
     }
 
+    public void adicionarTurma(Turma turma) {
+        turmas.add(turma);
+    }
+
     @Override
     public String toString() {
         String resposta = "DISCIPLINA: " + nome + "\n" + "CODIGO DA DISCIPLINA: " + codigo + "\n";
+        resposta += "TURMAS: \n";
+        for (Turma turma : turmas) {
+            resposta += turma.toString() + "\n";
+        }
         return resposta;
     }
 }
