@@ -3,7 +3,7 @@ package app;
 import java.util.List;
 
 public class Turma {
-  
+//FALTA IMPLEMENTAR O SISTEMA DE LISTA DE ALUNOS E CHAMADA
 private String codigo;
 	private int qtdVagas,
 				qtdVagasLivres;
