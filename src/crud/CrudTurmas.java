@@ -1,52 +1,77 @@
-package crud;
-
-import java.util.List;
-import java.util.LinkedList;
-
-import app.Disciplina;
+package cadastros;
 //FALTA SISTEMA DE CHAMADAS
-public class CrudDisciplina {
-	int numDisc;
-	private List<Disciplina> disciplinas;
+import java.util.LinkedList;
+import java.util.List;
+
+import app.Professor;
+import app.Disciplina;
+import app.Aluno;
+import app.Turma;
+
+public class CrudTurma {
+	int numTurmas;
+	private List<Turma> turmas;
 	
-	public CrudDisciplina(){
-		numDisc = 0;
-		disciplinas = new LinkedList<Disciplina>();
+	private static CadastroAluno cadAluno;
+	private static CadastroProfessor cadProfessor;
+	private static CrudDisciplina cadDisciplina;
+	
+	public CrudTurma(){
+		numTurmas = 0;
+		turmas = new LinkedList<Turma>();
 	}
 	
-	public int cadastrarDisciplina(Disciplina d) {
-		boolean cadastrou = disciplinas.add(d);
+	public int cadastrarTurma(Turma t) {
+		boolean cadastrou = turmas.add(t);
 		if(cadastrou) {
-			numDisc = disciplinas.size();
+			numTurmas = turmas.size();
 		}
-			return numDisc;
+			return numTurmas;
 	}
 	
-	public Disciplina pesquisarDisciplina(String codigo) {
-		Disciplina pesquisar = null;
-		 for(Disciplina d : disciplinas) {
-			 if (d.getCodigo().equalsIgnoreCase(codigo)) {
-				 return pesquisar;
+	public Turma pesquisarTurma(String codigo) {
+		Turma pesquisar = null;
+		 for(Turma t : turmas) {
+			 if (t.getCodigo().equalsIgnoreCase(codigo)) {
+				 return t;
 			 }
 		 }
 		 return pesquisar;
 	}
 	
-	public boolean removerDisciplina(Disciplina d) {
+	public boolean removerTurma(Turma t) {
 		boolean removeu = false;
-		if(disciplinas.contains(d)) {
-			removeu = disciplinas.remove(d);
-			numDisc = disciplinas.size();
+		if(turmas.contains(t)) {
+			removeu = turmas.remove(t);
+			numTurmas = turmas.size();
 		}
 		return removeu;
 	}
 	
-	public boolean atualizarDisciplina(String codigo, Disciplina d) {
-		for(Disciplina atualizar : disciplinas) {
+	public boolean atualizarTurma(String codigo, Turma t) {
+		for(Turma atualizar : turmas) {
 			if(atualizar.getCodigo().equalsIgnoreCase(codigo)) {
-				atualizar = d;
+				atualizar = t;
 				return true;
 			}
+		}
+		return false;
+	}
+	
+	public boolean adicionarProfessor(String matriculaFUB, Turma t) {
+		Professor p = cadProfessor.pesquisarProfessor(matriculaFUB);
+		if(p != null) {
+			t.setProfessor(p);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean adicionarDisciplina(String codigoDisciplina, Turma t) {
+		Disciplina d = cadDisciplina.pesquisarDisciplina(codigoDisciplina);
+		if(d != null) {
+			t.setDisciplina(d);
+			return true;
 		}
 		return false;
 	}
