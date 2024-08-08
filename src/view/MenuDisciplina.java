@@ -1,7 +1,6 @@
 package view;
 
 import javax.swing.JOptionPane;
-
 import app.Disciplina;
 import crud.CrudDisciplina;
 
@@ -14,11 +13,19 @@ public class MenuDisciplina {
 	}
 
 	private static String lerCodigo() {
-		return JOptionPane.showInputDialog("Informe o codigo da turma: ");
+		String codigo;
+		do {
+			codigo = JOptionPane.showInputDialog("Informe o codigo da disciplina: ");
+		} while (codigo == null || codigo.trim().isEmpty());
+		return codigo;
 	}
 
 	private static String lerNome() {
-		return JOptionPane.showInputDialog("Informe o nome da disciplina: ");
+		String nome;
+		do {
+			nome = JOptionPane.showInputDialog("Informe o nome da disciplina: ");
+		} while (nome == null || nome.trim().isEmpty());
+		return nome;
 	}
 
 	public static void menuDisciplina(CrudDisciplina cadDisciplina) {
@@ -32,44 +39,67 @@ public class MenuDisciplina {
 		int opcao = -1;
 		do {
 			String strOpcao = JOptionPane.showInputDialog(txt);
-			opcao = Integer.parseInt(strOpcao);
+			if (strOpcao != null) {
+				try {
+					opcao = Integer.parseInt(strOpcao);
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
+					continue;
+				}
 
-			switch (opcao) {
-				case 1:
-					Disciplina novaDisciplina = dadosNovaDisciplina();
-					cadDisciplina.cadastrarDisciplina(novaDisciplina);
-					break;
+				switch (opcao) {
+					case 1:
+						Disciplina novaDisciplina = dadosNovaDisciplina();
+						cadDisciplina.cadastrarDisciplina(novaDisciplina);
+						JOptionPane.showMessageDialog(null, "Disciplina cadastrada com sucesso!");
+						break;
 
-				case 2:
-					String codigo = lerCodigo();
-					Disciplina d = cadDisciplina.pesquisarDisciplina(codigo);
-					if (d != null) {
-						JOptionPane.showMessageDialog(null, d.toString());
-					}
-					break;
+					case 2:
+						String codigo = lerCodigo();
+						Disciplina d = cadDisciplina.pesquisarDisciplina(codigo);
+						if (d != null) {
+							JOptionPane.showMessageDialog(null, d.toString());
+						} else {
+							JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
+						}
+						break;
 
-				case 3:
-					codigo = lerCodigo();
-					Disciplina novoCadastro = dadosNovaDisciplina();
-					boolean atualizado = cadDisciplina.atualizarDisciplina(codigo, novoCadastro);
-					if (atualizado) {
-						JOptionPane.showMessageDialog(null, "Disciplina atualizada.");
-					}
-					break;
+					case 3:
+						codigo = lerCodigo();
+						Disciplina novoCadastro = dadosNovaDisciplina();
+						boolean atualizado = cadDisciplina.atualizarDisciplina(codigo, novoCadastro);
+						if (atualizado) {
+							JOptionPane.showMessageDialog(null, "Disciplina atualizada.");
+						} else {
+							JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
+						}
+						break;
 
-				case 4:
-					codigo = lerCodigo();
-					Disciplina remover = cadDisciplina.pesquisarDisciplina(codigo);
-					boolean removido = cadDisciplina.removerDisciplina(remover);
-					if (removido) {
-						JOptionPane.showMessageDialog(null, "Disciplina removida do catalogo.");
-						System.gc();
-					}
+					case 4:
+						codigo = lerCodigo();
+						Disciplina remover = cadDisciplina.pesquisarDisciplina(codigo);
+						if (remover != null) {
+							boolean removido = cadDisciplina.removerDisciplina(remover);
+							if (removido) {
+								JOptionPane.showMessageDialog(null, "Disciplina removida do catálogo.");
+							} else {
+								JOptionPane.showMessageDialog(null, "Erro ao remover disciplina.");
+							}
+						} else {
+							JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
+						}
+						break;
 
-				default:
-					break;
+					case 0:
+						break;
+
+					default:
+						JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
+						break;
+				}
+			} else {
+				opcao = 0;
 			}
 		} while (opcao != 0);
-		return;
 	}
 }
