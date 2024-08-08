@@ -3,26 +3,23 @@ package app;
 import java.util.List;
 
 public class Disciplina {
-    List<Turma> turmas;
-    String nome;
-    int codigo;
+    private String nome,
+            codigo;
 
-    public Disciplina(List<Turma> turmas, String nome, int codigo) {
-        this.turmas = turmas;
-        this.nome = nome;
-        this.codigo = codigo;
-    }
+    public Disciplina(String nome, String codigo) {
 
-    public List<Turma> getTurmas() {
-        return turmas;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public int getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
+    public String toString() {
+        String resposta = "DISCIPLINA: " + nome + "\n" + "CODIGO DA DISCIPLINA: " + codigo + "\n";
+        return resposta;
+    }
 }
