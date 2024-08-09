@@ -15,8 +15,8 @@ public class CrudTurma {
     private CrudDisciplina crudDisciplina;
 
     public CrudTurma(CrudAlunos crudAluno, CrudProfessores crudProfessor, CrudDisciplina crudDisciplina) {
-        numTurmas = 0;
-        turmas = new ArrayList<>();
+        this.numTurmas = 0;
+        this.turmas = new ArrayList<>();
         this.crudAluno = crudAluno;
         this.crudProfessor = crudProfessor;
         this.crudDisciplina = crudDisciplina;

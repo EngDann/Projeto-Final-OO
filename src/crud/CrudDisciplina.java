@@ -10,8 +10,8 @@ public class CrudDisciplina {
 	private List<Disciplina> disciplinas;
 
 	public CrudDisciplina() {
-		numDisc = 0;
-		disciplinas = new ArrayList<>();
+		this.numDisc = 0;
+		this.disciplinas = new ArrayList<>();
 	}
 
 	public int cadastrarDisciplina(Disciplina d) {
@@ -52,7 +52,7 @@ public class CrudDisciplina {
 	public boolean adicionarTurma(String codigoDisciplina, Turma turma) {
 		Disciplina disciplina = pesquisarDisciplina(codigoDisciplina);
 		if (disciplina != null) {
-			disciplina.getTurmas().add(turma);
+			disciplina.adicionarTurma(turma);
 			turma.setDisciplina(disciplina);
 			return true;
 		}
