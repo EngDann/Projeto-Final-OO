@@ -7,7 +7,7 @@ import crud.CrudAlunos;
 
 public class MenuAluno {
 
-	public static Aluno dadosNovoAluno() {
+	public static Aluno dadosNovoAluno() throws CampoEmBrancoException {
 		JPanel panel = new JPanel(new GridLayout(0, 2));
 
 		panel.add(new JLabel("Informe o nome do aluno:"));
@@ -43,8 +43,7 @@ public class MenuAluno {
 				String curso = cursoField.getText().trim();
 
 				if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || matricula.isEmpty() || curso.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Todos os campos devem ser preenchidos.", "Erro",
-							JOptionPane.ERROR_MESSAGE);
+					throw new CampoEmBrancoException("Todos os campos devem ser preenchidos.");
 				} else {
 					return new Aluno(nome, cpf, email, matricula, curso);
 				}
@@ -52,8 +51,6 @@ public class MenuAluno {
 				return null;
 			}
 		} while (result == JOptionPane.OK_OPTION);
-
-		return null;
 	}
 
 	public static void menuAluno(CrudAlunos cadAluno) {
@@ -77,10 +74,12 @@ public class MenuAluno {
 
 				switch (opcao) {
 					case 1:
-						Aluno novoAluno = dadosNovoAluno();
-						if (novoAluno != null) {
+						try{
+							Aluno novoAluno = dadosNovoAluno();
 							cadAluno.cadastrarAluno(novoAluno);
 							JOptionPane.showMessageDialog(null, "Aluno cadastrado com sucesso!");
+						} catch(CampoEmBrancoException e){
+							continue;
 						}
 						break;
 
@@ -99,7 +98,9 @@ public class MenuAluno {
 						break;
 
 					case 3:
-						matricula = JOptionPane.showInputDialog("Informe a matricula do aluno:");
+						try{
+							matricula = JOptionPane.showInputDialog("Informe a matricula do aluno:");
+						
 						if (matricula != null && !matricula.trim().isEmpty()) {
 							Aluno novoCadastro = dadosNovoAluno();
 							if (novoCadastro != null) {
@@ -112,6 +113,9 @@ public class MenuAluno {
 							}
 						} else {
 							JOptionPane.showMessageDialog(null, "Matricula não pode ser vazia.");
+						}
+						} catch(CampoEmBrancoException e) {
+						continue;	
 						}
 						break;
 
