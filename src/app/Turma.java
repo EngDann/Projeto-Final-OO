@@ -1,67 +1,79 @@
 package app;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Turma {
-//FALTA IMPLEMENTAR O SISTEMA DE LISTA DE ALUNOS E CHAMADA
-private String codigo;
-	private int qtdVagas,
-				qtdVagasLivres;
-	
-	private Professor professorAssociado;
-	private List<Aluno> alunosMatriculados;
-	private Disciplina disciplina;
-	
-	public Turma(String codigo, int qtdVagas) {
-		
-	}
-	
-	public final String getCodigo() {
-		return codigo;
-	}
-	
-	public final int getQtdVagas() {
-		return qtdVagas;
-	}
-	
-	public final int getQtdVagasLivres() {
-		return qtdVagasLivres;
-	}
-	
-	public final Professor getProfessor() {
-		return professorAssociado;
-	}
-	
-	public final List<Aluno> getAlunosMatriculados(){
-		return alunosMatriculados;
-	}
-	
-	public final Disciplina getDisciplina() {
-		return disciplina;
-	}
-	
-	public final void setQtdVagasLivres(int qtdVagasLivres) {
-		this.qtdVagasLivres = qtdVagasLivres;
-	}
-	
-	public void setProfessor(Professor professorAssociado) {
-		this.professorAssociado = professorAssociado;
-	}
-	
-	public void setAlunos(List<Aluno> alunosMatriculados) {
-		this.alunosMatriculados = alunosMatriculados;
-	}
-	
-	public void setDisciplina(Disciplina disciplina) {
-		this.disciplina = disciplina;
-	}
-	
-	public final String toString() {
-		String resposta = "DISCIPLINA: " + disciplina.getCodigo() + " " +disciplina.getNome()+ "\n";
-		resposta += "CODIGO: " + codigo + "\n";
-		resposta += "QUANTIDADE DE VAGAS: " + qtdVagas + "\n";
-		resposta += "NUMERO DE VAGAS LIVRES: " + qtdVagasLivres + "\n";
-		resposta += "PROFESSOR: " + professorAssociado.getNome() + "\n";
-		return resposta;
-	}
+    private String codigo;
+    private int qtdVagas;
+    private int qtdVagasLivres;
+    private List<Aluno> alunosMatriculados;
+    private Professor professorAssociado;
+    private Disciplina disciplina;
+
+    public Turma(String codigo, int qtdVagas) {
+        this.codigo = codigo;
+        this.qtdVagas = qtdVagas;
+        this.qtdVagasLivres = qtdVagas;
+        this.alunosMatriculados = new ArrayList<>();
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public int getQtdVagas() {
+        return qtdVagas;
+    }
+
+    public int getQtdVagasLivres() {
+        return qtdVagasLivres;
+    }
+
+    public Professor getProfessorAssociado() {
+        return professorAssociado;
+    }
+
+    public List<Aluno> getAlunosMatriculados() {
+        return alunosMatriculados;
+    }
+
+    public Disciplina getDisciplina() {
+        return disciplina;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public void setQtdVagas(int qtdVagas) {
+        this.qtdVagas = qtdVagas;
+    }
+
+    public void setQtdVagasLivres(int qtdVagasLivres) {
+        this.qtdVagasLivres = qtdVagasLivres;
+    }
+
+    public void setProfessorAssociado(Professor professorAssociado) {
+        this.professorAssociado = professorAssociado;
+    }
+
+    public void setAlunosMatriculados(List<Aluno> alunosMatriculados) {
+        this.alunosMatriculados = alunosMatriculados;
+    }
+
+    public void setDisciplina(Disciplina disciplina) {
+        this.disciplina = disciplina;
+    }
+
+    @Override
+    public String toString() {
+        String resposta = "DISCIPLINA: "
+                + (disciplina != null ? disciplina.getCodigo() + " " + disciplina.getNome() : "N/A") + "\n";
+        resposta += "CODIGO: " + codigo + "\n";
+        resposta += "QUANTIDADE DE VAGAS: " + qtdVagas + "\n";
+        resposta += "NUMERO DE VAGAS LIVRES: " + qtdVagasLivres + "\n";
+        resposta += "PROFESSOR: " + (professorAssociado != null ? professorAssociado.getNome() : "N/A") + "\n";
+        return resposta;
+    }
 }

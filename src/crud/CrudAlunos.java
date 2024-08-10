@@ -1,17 +1,16 @@
-package cadastros;
+package crud;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import app.Aluno;
 
 public class CrudAlunos {
-	int numAlunos;
+	private int numAlunos;
 	private List<Aluno> alunos;
 
 	public CrudAlunos() {
-		numAlunos = 0;
-		alunos = new ArrayList<Aluno>();
+		this.numAlunos = 0;
+		this.alunos = new ArrayList<>();
 	}
 
 	public int cadastrarAluno(Aluno a) {
@@ -32,20 +31,20 @@ public class CrudAlunos {
 	}
 
 	public boolean removerAluno(Aluno a) {
-		boolean removeu = false;
-		if (alunos.contains(a)) {
-			removeu = alunos.remove(a);
+		boolean removeu = alunos.remove(a);
+		if (removeu) {
+			numAlunos = alunos.size();
 		}
 		return removeu;
 	}
 
 	public boolean atualizarAluno(String matricula, Aluno a) {
-		boolean resposta = false;
-		Aluno remover = pesquisarAluno(matricula);
-		if (remover != null) {
-			alunos.remove(remover);
-			resposta = alunos.add(a);
+		for (int i = 0; i < alunos.size(); i++) {
+			if (alunos.get(i).getMatricula().equalsIgnoreCase(matricula)) {
+				alunos.set(i, a);
+				return true;
+			}
 		}
-		return resposta;
+		return false;
 	}
 }
