@@ -6,7 +6,7 @@
 -   **Faculdade:** Faculdade do Gama (FGA)
 -   **Disciplina:** Orientação por Objetos (OO)
 -   **Professor:** André Luiz Peron Martins Lanna
--   **Alunos:** Danilo de Melo Ribeiro, Ricardo Henrique Silva Rodrigues(231037727), Noboro
+-   **Alunos:** Danilo de Melo Ribeiro (232014244), Ricardo Henrique Silva Rodrigues(231037727), Noboro
 -   **Data de Entrega:** 12/08/2024
 
 ## Objetivo
