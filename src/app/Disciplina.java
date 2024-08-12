@@ -35,7 +35,7 @@ public class Disciplina {
         String resposta = "DISCIPLINA: " + nome + "\n" + "CODIGO DA DISCIPLINA: " + codigo + "\n";
         resposta += "TURMAS: \n";
         for (Turma turma : turmas) {
-            resposta += turma.toString() + "\n";
+            resposta += "Turma " + turma.getCodigo() + "\n";
         }
         return resposta;
     }
