@@ -69,15 +69,6 @@ public class CrudTurma {
         return false;
     }
 
-    public boolean adicionarDisciplina(String codigoDisciplina, Turma turma) {
-        Disciplina d = crudDisciplina.pesquisarDisciplina(codigoDisciplina);
-        if (d != null) {
-            turma.setDisciplina(d);
-            return true;
-        }
-        return false;
-    }
-
     public boolean adicionarAluno(String matricula, Turma turma) {
         Aluno alun = crudAluno.pesquisarAluno(matricula);
         if (alun != null && turma.getQtdVagasLivres() > 0) {
@@ -90,7 +81,7 @@ public class CrudTurma {
 
     public void listaDePresenca(String codigoTurma) {
         Turma t = pesquisarTurma(codigoTurma);
-        String lista = "Lista de chamada: NOME - MATRICULA\n";
+        String lista = "Lista de chamada: turma "+codigoTurma+"\n";
         if (t != null) {
         	for(Aluno a : t.getAlunosMatriculados()) {
         		lista += a.getNome()+" "+a.getMatricula()+"\n";
@@ -98,4 +89,13 @@ public class CrudTurma {
         	JOptionPane.showMessageDialog(null, lista);
         }
     }
+    
+    public boolean repeteCodigo(String cod){
+		for(Turma t : turmas) {
+			if(t.getCodigo().trim().equalsIgnoreCase(cod)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
