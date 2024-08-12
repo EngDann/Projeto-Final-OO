@@ -13,13 +13,11 @@ public class Turma {
     private Professor professorAssociado;
     private Disciplina disciplina;
 
-    static CrudDisciplina cadDisciplina;
-    static CrudProfessores cadProfessor;
-    
-    public Turma(String codigo, String disciplina, String matProf, int qtdVagas) {
+    public Turma(String codigo, String disciplina, String matProf, int qtdVagas, CrudDisciplina cadDisciplina,
+            CrudProfessores cadProfessor) {
         this.codigo = codigo;
         this.disciplina = cadDisciplina.pesquisarDisciplina(disciplina);
-        professorAssociado = cadProfessor.pesquisarProfessor(matProf);
+        this.professorAssociado = cadProfessor.pesquisarProfessor(matProf);
         this.qtdVagas = qtdVagas;
         this.qtdVagasLivres = qtdVagas;
         this.alunosMatriculados = new ArrayList<>();

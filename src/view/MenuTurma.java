@@ -4,13 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 import app.Turma;
 import crud.CrudTurma;
+import crud.CrudDisciplina;
+import crud.CrudProfessores;
 import excecao.CampoEmBrancoException;
 import excecao.ProfessorNaoAtribuidoException;
 import excecao.DisciplinaNaoAtribuidaException;
 
 public class MenuTurma {
 
-	public static Turma dadosNovaTurma() throws CampoEmBrancoException,
+	public static Turma dadosNovaTurma(CrudDisciplina cadDisciplina, CrudProfessores cadProfessor)
+			throws CampoEmBrancoException,
 			ProfessorNaoAtribuidoException,
 			DisciplinaNaoAtribuidaException {
 		JPanel panel = new JPanel(new GridLayout(0, 2));
@@ -19,11 +22,11 @@ public class MenuTurma {
 		JTextField codigoField = new JTextField();
 		panel.add(codigoField);
 
-		panel.add(new JLabel("Informe o codigo da disciplina associada a essa turma:"));
+		panel.add(new JLabel("Informe o código da disciplina associada a essa turma:"));
 		JTextField discField = new JTextField();
 		panel.add(discField);
 
-		panel.add(new JLabel("Informe a matricula FUB do professor associado a turma:"));
+		panel.add(new JLabel("Informe a matrícula FUB do professor associado a turma:"));
 		JTextField profField = new JTextField();
 		panel.add(profField);
 
@@ -38,11 +41,23 @@ public class MenuTurma {
 			String codigo = codigoField.getText().trim();
 			String codigoDisciplina = discField.getText().trim();
 			String matriculaProfessor = profField.getText().trim();
-			int qtdVagas = Integer.parseInt(qtdVagasField.getText().trim());
+			String qtdVagasStr = qtdVagasField.getText().trim();
 
-			if (codigo.isEmpty() || qtdVagas <= 0) {
+			if (codigo.isEmpty() || qtdVagasStr.isEmpty()) {
 				throw new CampoEmBrancoException("Todos os campos devem ser preenchidos corretamente.");
 			}
+
+			int qtdVagas;
+			try {
+				qtdVagas = Integer.parseInt(qtdVagasStr);
+			} catch (NumberFormatException e) {
+				throw new CampoEmBrancoException("O número de vagas deve ser um número inteiro válido.");
+			}
+
+			if (qtdVagas <= 0) {
+				throw new CampoEmBrancoException("O número de vagas deve ser maior que zero.");
+			}
+
 			if (codigoDisciplina.isEmpty()) {
 				throw new DisciplinaNaoAtribuidaException(
 						"É obrigatorio uma disciplina para completar o cadastro.");
@@ -50,16 +65,16 @@ public class MenuTurma {
 			if (matriculaProfessor.isEmpty()) {
 				throw new ProfessorNaoAtribuidoException(
 						"É obrigatorio um professor associado para completar o cadastro.");
-			} else {
-				return new Turma(codigo, codigoDisciplina, matriculaProfessor, qtdVagas);
 			}
+
+			return new Turma(codigo, codigoDisciplina, matriculaProfessor, qtdVagas, cadDisciplina, cadProfessor);
 		} else {
 			return null;
 		}
-
 	}
 
-	public static void menuTurma(CrudTurma crudTurma) throws CampoEmBrancoException,
+	public static void menuTurma(CrudTurma crudTurma, CrudDisciplina cadDisciplina, CrudProfessores cadProfessor)
+			throws CampoEmBrancoException,
 			ProfessorNaoAtribuidoException,
 			DisciplinaNaoAtribuidaException {
 		String txt = "Informe a opção desejada \n"
@@ -86,7 +101,7 @@ public class MenuTurma {
 				switch (opcao) {
 					case 1:
 						try {
-							Turma novaTurma = dadosNovaTurma();
+							Turma novaTurma = dadosNovaTurma(cadDisciplina, cadProfessor);
 							if (novaTurma != null) {
 								crudTurma.cadastrarTurma(novaTurma);
 								JOptionPane.showMessageDialog(null, "Turma cadastrada com sucesso!");
@@ -117,7 +132,7 @@ public class MenuTurma {
 					case 3:
 						codigo = JOptionPane.showInputDialog("Informe o código da turma:");
 						if (codigo != null && !codigo.trim().isEmpty()) {
-							Turma novoCadastro = dadosNovaTurma();
+							Turma novoCadastro = dadosNovaTurma(cadDisciplina, cadProfessor);
 							if (novoCadastro != null) {
 								boolean atualizado = crudTurma.atualizarTurma(codigo.trim(), novoCadastro);
 								if (atualizado) {

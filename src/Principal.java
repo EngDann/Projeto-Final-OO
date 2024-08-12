@@ -53,7 +53,7 @@ public class Principal {
 					break;
 				case 4:
 					try {
-						MenuTurma.menuTurma(crudTurma);
+						MenuTurma.menuTurma(crudTurma, crudDisciplina, crudProfessor);
 					} catch (CampoEmBrancoException e) {
 						e.printStackTrace();
 					} catch (DisciplinaNaoAtribuidaException e) {
