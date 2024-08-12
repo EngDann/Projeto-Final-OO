@@ -11,8 +11,8 @@ import excecao.DisciplinaNaoAtribuidaException;
 public class MenuTurma {
 
 	public static Turma dadosNovaTurma() throws CampoEmBrancoException,
-												ProfessorNaoAtribuidoException,
-												DisciplinaNaoAtribuidaException {
+			ProfessorNaoAtribuidoException,
+			DisciplinaNaoAtribuidaException {
 		JPanel panel = new JPanel(new GridLayout(0, 2));
 
 		panel.add(new JLabel("Informe o código da turma:"));
@@ -22,54 +22,46 @@ public class MenuTurma {
 		panel.add(new JLabel("Informe o codigo da disciplina associada a essa turma:"));
 		JTextField discField = new JTextField();
 		panel.add(discField);
-		
+
 		panel.add(new JLabel("Informe a matricula FUB do professor associado a turma:"));
 		JTextField profField = new JTextField();
 		panel.add(profField);
-		
+
 		panel.add(new JLabel("Informe o número de vagas da turma:"));
 		JTextField qtdVagasField = new JTextField();
 		panel.add(qtdVagasField);
 
-		int result;
-		do {
-			result = JOptionPane.showConfirmDialog(null, panel, "Cadastro de Nova Turma", JOptionPane.OK_CANCEL_OPTION,
-					JOptionPane.PLAIN_MESSAGE);
+		int result = JOptionPane.showConfirmDialog(null, panel, "Cadastro de Nova Turma", JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.PLAIN_MESSAGE);
 
-			if (result == JOptionPane.OK_OPTION) {
-				String codigo = codigoField.getText().trim();
-				String codigoDisciplina = discField.getText().trim();
-				String matriculaProfessor = profField.getText().trim();
+		if (result == JOptionPane.OK_OPTION) {
+			String codigo = codigoField.getText().trim();
+			String codigoDisciplina = discField.getText().trim();
+			String matriculaProfessor = profField.getText().trim();
+			int qtdVagas = Integer.parseInt(qtdVagasField.getText().trim());
 
-				int qtdVagas;
-				qtdVagas = Integer.parseInt(qtdVagasField.getText().trim());
-				
-				try {
-					if (codigo.isEmpty() || qtdVagas <= 0) {
-						throw new CampoEmBrancoException("Todos os campos devem ser preenchidos corretamente.");
-					} if (codigoDisciplina.isEmpty()){
-						throw new DisciplinaNaoAtribuidaException("É obrigatorio uma disciplina para completar o cadastro.");
-					} if (matriculaProfessor.isEmpty()) {
-						throw new ProfessorNaoAtribuidoException("É obrigatorio um professor associado para completar o cadastro.");
-					}	
-						else {
-						return new Turma(codigo, codigoDisciplina, matriculaProfessor, qtdVagas);
-					}
-				} catch (NumberFormatException e) {
-					JOptionPane.showMessageDialog(null, "Número de vagas deve ser um número válido.", "Erro",
-							JOptionPane.ERROR_MESSAGE);
-				}
-			} else {
-				return null;
+			if (codigo.isEmpty() || qtdVagas <= 0) {
+				throw new CampoEmBrancoException("Todos os campos devem ser preenchidos corretamente.");
 			}
-		} while (result == JOptionPane.OK_OPTION);
+			if (codigoDisciplina.isEmpty()) {
+				throw new DisciplinaNaoAtribuidaException(
+						"É obrigatorio uma disciplina para completar o cadastro.");
+			}
+			if (matriculaProfessor.isEmpty()) {
+				throw new ProfessorNaoAtribuidoException(
+						"É obrigatorio um professor associado para completar o cadastro.");
+			} else {
+				return new Turma(codigo, codigoDisciplina, matriculaProfessor, qtdVagas);
+			}
+		} else {
+			return null;
+		}
 
-		return null;
 	}
 
 	public static void menuTurma(CrudTurma crudTurma) throws CampoEmBrancoException,
-															 ProfessorNaoAtribuidoException,
-															 DisciplinaNaoAtribuidaException {
+			ProfessorNaoAtribuidoException,
+			DisciplinaNaoAtribuidaException {
 		String txt = "Informe a opção desejada \n"
 				+ "1 - Criar turma\n"
 				+ "2 - Pesquisar Turma\n"
@@ -93,11 +85,15 @@ public class MenuTurma {
 
 				switch (opcao) {
 					case 1:
-						Turma novaTurma = dadosNovaTurma();
 						try {
-							crudTurma.cadastrarTurma(novaTurma);
-							JOptionPane.showMessageDialog(null, "Turma cadastrada com sucesso!");
-						} catch(NullPointerException e) {
+							Turma novaTurma = dadosNovaTurma();
+							if (novaTurma != null) {
+								crudTurma.cadastrarTurma(novaTurma);
+								JOptionPane.showMessageDialog(null, "Turma cadastrada com sucesso!");
+							} else {
+								JOptionPane.showMessageDialog(null, "Cadastro de turma cancelado.");
+							}
+						} catch (NullPointerException e) {
 							JOptionPane.showMessageDialog(null, "Algo deu errado no cadastro.", null,
 									JOptionPane.ERROR_MESSAGE);
 							e.printStackTrace();
@@ -173,7 +169,8 @@ public class MenuTurma {
 								JOptionPane.showMessageDialog(null, "Turma não encontrada.");
 							}
 						} else {
-							throw new CampoEmBrancoException("Matricula do aluno e codigo da turma nao podem ser vazios.");
+							throw new CampoEmBrancoException(
+									"Matricula do aluno e codigo da turma nao podem ser vazios.");
 						}
 						break;
 
@@ -185,7 +182,7 @@ public class MenuTurma {
 							throw new CampoEmBrancoException("Codigo da turma nao pode ser vazio.");
 						}
 						break;
-	
+
 					case 7:
 						codigo = JOptionPane.showInputDialog("Informe o código da turma:");
 						if (codigo != null && !codigo.trim().isEmpty()) {

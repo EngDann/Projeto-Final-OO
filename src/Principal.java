@@ -16,8 +16,8 @@ public class Principal {
 
 	static CrudAlunos crudAluno;
 	static CrudProfessores crudProfessor;
-	static CrudTurma crudTurma;
 	static CrudDisciplina crudDisciplina;
+	static CrudTurma crudTurma;
 
 	public static void main(String[] args) {
 		crudAluno = new CrudAlunos();
@@ -31,36 +31,36 @@ public class Principal {
 			opcao = MenuPrincipal.menuOpcoes();
 			switch (opcao) {
 				case 1:
-				try {
-					MenuAluno.menuAluno(crudAluno);
-				} catch (CampoEmBrancoException e) {
-					e.printStackTrace();
-				}
+					try {
+						MenuAluno.menuAluno(crudAluno);
+					} catch (CampoEmBrancoException e) {
+						e.printStackTrace();
+					}
 					break;
 				case 2:
-				try {
-					MenuProfessor.menuProfessor(crudProfessor);
-				} catch (CampoEmBrancoException e) {
-					e.printStackTrace();
-				}
+					try {
+						MenuProfessor.menuProfessor(crudProfessor);
+					} catch (CampoEmBrancoException e) {
+						e.printStackTrace();
+					}
 					break;
 				case 3:
-				try {
-					MenuDisciplina.menuDisciplina(crudDisciplina, crudTurma);
-				} catch (CampoEmBrancoException e) {
-					e.printStackTrace();
-				}
+					try {
+						MenuDisciplina.menuDisciplina(crudDisciplina, crudTurma);
+					} catch (CampoEmBrancoException e) {
+						e.printStackTrace();
+					}
 					break;
 				case 4:
-				try {
-					MenuTurma.menuTurma(crudTurma);
-				} catch (CampoEmBrancoException e) {
-					e.printStackTrace();
-				} catch (DisciplinaNaoAtribuidaException e) {
-					e.printStackTrace();
-				} catch (ProfessorNaoAtribuidoException e) {
-					e.printStackTrace();
-				}
+					try {
+						MenuTurma.menuTurma(crudTurma);
+					} catch (CampoEmBrancoException e) {
+						e.printStackTrace();
+					} catch (DisciplinaNaoAtribuidaException e) {
+						e.printStackTrace();
+					} catch (ProfessorNaoAtribuidoException e) {
+						e.printStackTrace();
+					}
 					break;
 				case 0:
 					break;

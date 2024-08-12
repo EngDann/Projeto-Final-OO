@@ -70,7 +70,6 @@ public class MenuDisciplina {
 								JOptionPane.showMessageDialog(null, "Disciplina cadastrada com sucesso!");
 							} else {
 								JOptionPane.showMessageDialog(null, "Cadastro de disciplina cancelado.");
-
 							}
 						} catch (NullPointerException e) {
 							JOptionPane.showMessageDialog(null, "Algo deu errado no cadastro.", null,
