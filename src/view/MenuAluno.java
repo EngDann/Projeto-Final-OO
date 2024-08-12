@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import app.Aluno;
 import crud.CrudAlunos;
+import excecao.CampoEmBrancoException;
 
 public class MenuAluno {
 
@@ -53,7 +54,7 @@ public class MenuAluno {
 		} while (result == JOptionPane.OK_OPTION);
 	}
 
-	public static void menuAluno(CrudAlunos cadAluno) {
+	public static void menuAluno(CrudAlunos cadAluno) throws CampoEmBrancoException {
 		String txt = "Informe a opção desejada \n"
 				+ "1 - Cadastrar aluno\n"
 				+ "2 - Pesquisar aluno\n"
@@ -74,12 +75,14 @@ public class MenuAluno {
 
 				switch (opcao) {
 					case 1:
+						Aluno novoAluno = dadosNovoAluno();
 						try{
-							Aluno novoAluno = dadosNovoAluno();
-							cadAluno.cadastrarAluno(novoAluno);
-							JOptionPane.showMessageDialog(null, "Aluno cadastrado com sucesso!");
-						} catch(CampoEmBrancoException e){
-							continue;
+								cadAluno.cadastrarAluno(novoAluno);
+								JOptionPane.showMessageDialog(null, "Aluno cadastrado com sucesso!");
+						} catch(NullPointerException e){
+							JOptionPane.showMessageDialog(null, "Algo deu errado no cadastro.", null,
+									JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
 						}
 						break;
 
@@ -93,14 +96,12 @@ public class MenuAluno {
 								JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
 							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Matricula não pode ser vazia.");
+							throw new CampoEmBrancoException("Matricula nao pode ser vazia.");
 						}
 						break;
 
 					case 3:
-						try{
-							matricula = JOptionPane.showInputDialog("Informe a matricula do aluno:");
-						
+						matricula = JOptionPane.showInputDialog("Informe a matricula do aluno:");
 						if (matricula != null && !matricula.trim().isEmpty()) {
 							Aluno novoCadastro = dadosNovoAluno();
 							if (novoCadastro != null) {
@@ -112,11 +113,8 @@ public class MenuAluno {
 								}
 							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Matricula não pode ser vazia.");
-						}
-						} catch(CampoEmBrancoException e) {
-						continue;	
-						}
+							throw new CampoEmBrancoException("Matricula nao pode ser vazia.");
+						}					
 						break;
 
 					case 4:
@@ -135,7 +133,7 @@ public class MenuAluno {
 								JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
 							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Matricula não pode ser vazia.");
+							throw new CampoEmBrancoException("Matricula nao pode ser vazia.");
 						}
 						break;
 

@@ -4,16 +4,29 @@ import javax.swing.*;
 import java.awt.*;
 import app.Turma;
 import crud.CrudTurma;
+import excecao.CampoEmBrancoException;
+import excecao.ProfessorNaoAtribuidoException;
+import excecao.DisciplinaNaoAtribuidaException;
 
 public class MenuTurma {
 
-	public static Turma dadosNovaTurma() {
+	public static Turma dadosNovaTurma() throws CampoEmBrancoException,
+												ProfessorNaoAtribuidoException,
+												DisciplinaNaoAtribuidaException {
 		JPanel panel = new JPanel(new GridLayout(0, 2));
 
 		panel.add(new JLabel("Informe o código da turma:"));
 		JTextField codigoField = new JTextField();
 		panel.add(codigoField);
 
+		panel.add(new JLabel("Informe o codigo da disciplina associada a essa turma:"));
+		JTextField discField = new JTextField();
+		panel.add(discField);
+		
+		panel.add(new JLabel("Informe a matricula FUB do professor associado a turma:"));
+		JTextField profField = new JTextField();
+		panel.add(profField);
+		
 		panel.add(new JLabel("Informe o número de vagas da turma:"));
 		JTextField qtdVagasField = new JTextField();
 		panel.add(qtdVagasField);
@@ -25,14 +38,22 @@ public class MenuTurma {
 
 			if (result == JOptionPane.OK_OPTION) {
 				String codigo = codigoField.getText().trim();
+				String codigoDisciplina = discField.getText().trim();
+				String matriculaProfessor = profField.getText().trim();
+
 				int qtdVagas;
+				qtdVagas = Integer.parseInt(qtdVagasField.getText().trim());
+				
 				try {
-					qtdVagas = Integer.parseInt(qtdVagasField.getText().trim());
 					if (codigo.isEmpty() || qtdVagas <= 0) {
-						JOptionPane.showMessageDialog(null, "Todos os campos devem ser preenchidos corretamente.",
-								"Erro", JOptionPane.ERROR_MESSAGE);
-					} else {
-						return new Turma(codigo, qtdVagas);
+						throw new CampoEmBrancoException("Todos os campos devem ser preenchidos corretamente.");
+					} if (codigoDisciplina.isEmpty()){
+						throw new DisciplinaNaoAtribuidaException("É obrigatorio uma disciplina para completar o cadastro.");
+					} if (matriculaProfessor.isEmpty()) {
+						throw new ProfessorNaoAtribuidoException("É obrigatorio um professor associado para completar o cadastro.");
+					}	
+						else {
+						return new Turma(codigo, codigoDisciplina, matriculaProfessor, qtdVagas);
 					}
 				} catch (NumberFormatException e) {
 					JOptionPane.showMessageDialog(null, "Número de vagas deve ser um número válido.", "Erro",
@@ -46,14 +67,16 @@ public class MenuTurma {
 		return null;
 	}
 
-	public static void menuTurma(CrudTurma crudTurma) {
+	public static void menuTurma(CrudTurma crudTurma) throws CampoEmBrancoException,
+															 ProfessorNaoAtribuidoException,
+															 DisciplinaNaoAtribuidaException {
 		String txt = "Informe a opção desejada \n"
 				+ "1 - Criar turma\n"
 				+ "2 - Pesquisar Turma\n"
 				+ "3 - Atualizar turma\n"
 				+ "4 - Associar professor\n"
-				+ "5 - Associar disciplina\n"
-				+ "6 - Associar aluno\n"
+				+ "5 - Adicionar aluno\n"
+				+ "6 - Solicitar lista de chamada\n"
 				+ "7 - Remover turma\n"
 				+ "0 - Voltar para menu anterior";
 
@@ -71,9 +94,13 @@ public class MenuTurma {
 				switch (opcao) {
 					case 1:
 						Turma novaTurma = dadosNovaTurma();
-						if (novaTurma != null) {
+						try {
 							crudTurma.cadastrarTurma(novaTurma);
 							JOptionPane.showMessageDialog(null, "Turma cadastrada com sucesso!");
+						} catch(NullPointerException e) {
+							JOptionPane.showMessageDialog(null, "Algo deu errado no cadastro.", null,
+									JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
 						}
 						break;
 
@@ -87,7 +114,7 @@ public class MenuTurma {
 								JOptionPane.showMessageDialog(null, "Turma não encontrada.");
 							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Código da turma não pode ser vazio.");
+							throw new CampoEmBrancoException("Codigo da turma nao pode ser vazio.");
 						}
 						break;
 
@@ -104,7 +131,7 @@ public class MenuTurma {
 								}
 							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Código da turma não pode ser vazio.");
+							throw new CampoEmBrancoException("Codigo da turma nao pode ser vazio.");
 						}
 						break;
 
@@ -124,34 +151,11 @@ public class MenuTurma {
 								JOptionPane.showMessageDialog(null, "Turma não encontrada.");
 							}
 						} else {
-							JOptionPane.showMessageDialog(null,
-									"Matrícula FUB e Código da turma não podem ser vazios.");
+							throw new CampoEmBrancoException("Matricula FUB e codigo da turma nao pode ser vazio.");
 						}
 						break;
 
 					case 5:
-						String codigoDisciplina = JOptionPane.showInputDialog("Informe o código da disciplina:");
-						codigo = JOptionPane.showInputDialog("Informe o código da turma:");
-						if (codigoDisciplina != null && !codigoDisciplina.trim().isEmpty() && codigo != null
-								&& !codigo.trim().isEmpty()) {
-							Turma t = crudTurma.pesquisarTurma(codigo.trim());
-							if (t != null) {
-								boolean adicionouDisciplina = crudTurma.adicionarDisciplina(codigoDisciplina.trim(), t);
-								if (adicionouDisciplina) {
-									JOptionPane.showMessageDialog(null, "Disciplina designada.");
-								} else {
-									JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");
-								}
-							} else {
-								JOptionPane.showMessageDialog(null, "Turma não encontrada.");
-							}
-						} else {
-							JOptionPane.showMessageDialog(null,
-									"Código da disciplina e Código da turma não podem ser vazios.");
-						}
-						break;
-
-					case 6:
 						String matAluno = JOptionPane.showInputDialog("Informe a matrícula do aluno:");
 						codigo = JOptionPane.showInputDialog("Informe o código da turma:");
 						if (matAluno != null && !matAluno.trim().isEmpty() && codigo != null
@@ -169,11 +173,19 @@ public class MenuTurma {
 								JOptionPane.showMessageDialog(null, "Turma não encontrada.");
 							}
 						} else {
-							JOptionPane.showMessageDialog(null,
-									"Matrícula do aluno e Código da turma não podem ser vazios.");
+							throw new CampoEmBrancoException("Matricula do aluno e codigo da turma nao podem ser vazios.");
 						}
 						break;
 
+					case 6:
+						String codigoTurma = JOptionPane.showInputDialog("Informe o codigo da turma:");
+						if (codigoTurma != null) {
+							crudTurma.listaDePresenca(codigoTurma);
+						} else {
+							throw new CampoEmBrancoException("Codigo da turma nao pode ser vazio.");
+						}
+						break;
+	
 					case 7:
 						codigo = JOptionPane.showInputDialog("Informe o código da turma:");
 						if (codigo != null && !codigo.trim().isEmpty()) {
@@ -190,7 +202,7 @@ public class MenuTurma {
 								JOptionPane.showMessageDialog(null, "Turma não encontrada.");
 							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Código da turma não pode ser vazio.");
+							throw new CampoEmBrancoException("Codigo da turma nao pode ser vazio.");
 						}
 						break;
 
