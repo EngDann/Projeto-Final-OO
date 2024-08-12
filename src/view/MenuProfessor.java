@@ -4,10 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import app.Professor;
 import crud.CrudProfessores;
+import excecao.CampoEmBrancoException;
 
 public class MenuProfessor {
 
-	public static Professor dadosNovoProfessor() {
+	public static Professor dadosNovoProfessor() throws CampoEmBrancoException {
 		JPanel panel = new JPanel(new GridLayout(0, 2));
 
 		panel.add(new JLabel("Informe o nome do professor:"));
@@ -44,8 +45,7 @@ public class MenuProfessor {
 
 				if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || matriculaFUB.isEmpty()
 						|| areaFormacao.isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Todos os campos devem ser preenchidos.", "Erro",
-							JOptionPane.ERROR_MESSAGE);
+					throw new CampoEmBrancoException("Todos os campos devem ser preenchidos.");
 				} else {
 					return new Professor(nome, cpf, email, matriculaFUB, areaFormacao);
 				}
@@ -53,11 +53,9 @@ public class MenuProfessor {
 				return null;
 			}
 		} while (result == JOptionPane.OK_OPTION);
-
-		return null;
 	}
 
-	public static void menuProfessor(CrudProfessores crudProfessor) {
+	public static void menuProfessor(CrudProfessores crudProfessor) throws CampoEmBrancoException {
 		String txt = "Informe a opção desejada \n"
 				+ "1 - Cadastrar professor\n"
 				+ "2 - Pesquisar professor\n"
@@ -79,9 +77,13 @@ public class MenuProfessor {
 				switch (opcao) {
 					case 1:
 						Professor novoProfessor = dadosNovoProfessor();
-						if (novoProfessor != null) {
+						try {
 							crudProfessor.cadastrarProfessor(novoProfessor);
 							JOptionPane.showMessageDialog(null, "Professor cadastrado com sucesso!");
+						} catch (NullPointerException e) {
+							JOptionPane.showMessageDialog(null, "Algo deu errado no cadastro.", null,
+									JOptionPane.ERROR_MESSAGE);
+							e.printStackTrace();
 						}
 						break;
 
@@ -95,7 +97,7 @@ public class MenuProfessor {
 								JOptionPane.showMessageDialog(null, "Professor não encontrado.");
 							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Matrícula FUB não pode ser vazia.");
+							throw new CampoEmBrancoException("Matricula FUB nao pode ser vazia.");
 						}
 						break;
 
@@ -113,7 +115,7 @@ public class MenuProfessor {
 								}
 							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Matrícula FUB não pode ser vazia.");
+							throw new CampoEmBrancoException("Matricula FUB nao pode ser vazia.");
 						}
 						break;
 
@@ -133,7 +135,7 @@ public class MenuProfessor {
 								JOptionPane.showMessageDialog(null, "Professor não encontrado.");
 							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Matrícula FUB não pode ser vazia.");
+							throw new CampoEmBrancoException("Matricula FUB nao pode ser vazia.");
 						}
 						break;
 
