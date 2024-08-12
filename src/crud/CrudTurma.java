@@ -2,6 +2,9 @@ package crud;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
+
 import app.Professor;
 import app.Disciplina;
 import app.Aluno;
@@ -85,7 +88,14 @@ public class CrudTurma {
         return false;
     }
 
-    public void listaDePresenca() {
-        // Implementar lógica de lista de presença
+    public void listaDePresenca(String codigoTurma) {
+        Turma t = pesquisarTurma(codigoTurma);
+        String lista = "Lista de chamada: NOME - MATRICULA\n";
+        if (t != null) {
+        	for(Aluno a : t.getAlunosMatriculados()) {
+        		lista += a.getNome()+" "+a.getMatricula()+"\n";
+        	}
+        	JOptionPane.showMessageDialog(null, lista);
+        }
     }
 }
