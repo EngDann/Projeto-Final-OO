@@ -11,7 +11,7 @@ import excecao.CampoEmBrancoException;
 public class MenuDisciplina {
 
 	static CrudTurma cadTurma;
-	
+
 	public static Disciplina dadosNovaDisciplina() throws CampoEmBrancoException {
 		JPanel panel = new JPanel(new GridLayout(0, 2));
 
@@ -23,24 +23,21 @@ public class MenuDisciplina {
 		JTextField codigoField = new JTextField();
 		panel.add(codigoField);
 
-		int result;
-		do {
-			result = JOptionPane.showConfirmDialog(null, panel, "Cadastro de Nova Disciplina",
-					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		int result = JOptionPane.showConfirmDialog(null, panel, "Cadastro de Nova Disciplina",
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-			if (result == JOptionPane.OK_OPTION) {
-				String nome = nomeField.getText().trim();
-				String codigo = codigoField.getText().trim();
+		if (result == JOptionPane.OK_OPTION) {
+			String nome = nomeField.getText().trim();
+			String codigo = codigoField.getText().trim();
 
-				if (nome.isEmpty() || codigo.isEmpty()) {
-					throw new CampoEmBrancoException("Todos os campos devem ser preenchidos.");
-				} else {
-					return new Disciplina(nome, codigo);
-				}
+			if (nome.isEmpty() || codigo.isEmpty()) {
+				throw new CampoEmBrancoException("Todos os campos devem ser preenchidos.");
 			} else {
-				return null;
+				return new Disciplina(nome, codigo);
 			}
-		} while (result == JOptionPane.OK_OPTION);
+		} else {
+			return null;
+		}
 	}
 
 	public static void menuDisciplina(CrudDisciplina cadDisciplina, CrudTurma cadTurma) throws CampoEmBrancoException {
@@ -66,11 +63,16 @@ public class MenuDisciplina {
 
 				switch (opcao) {
 					case 1:
-						Disciplina novaDisciplina = dadosNovaDisciplina();
 						try {
-							cadDisciplina.cadastrarDisciplina(novaDisciplina);
-							JOptionPane.showMessageDialog(null, "Disciplina cadastrada com sucesso!");
-						} catch(NullPointerException e) {
+							Disciplina novaDisciplina = dadosNovaDisciplina();
+							if (novaDisciplina != null) {
+								cadDisciplina.cadastrarDisciplina(novaDisciplina);
+								JOptionPane.showMessageDialog(null, "Disciplina cadastrada com sucesso!");
+							} else {
+								JOptionPane.showMessageDialog(null, "Cadastro de disciplina cancelado.");
+
+							}
+						} catch (NullPointerException e) {
 							JOptionPane.showMessageDialog(null, "Algo deu errado no cadastro.", null,
 									JOptionPane.ERROR_MESSAGE);
 							e.printStackTrace();
@@ -131,7 +133,7 @@ public class MenuDisciplina {
 						codigo = JOptionPane.showInputDialog("Informe o código da disciplina:");
 						if (codigo != null && !codigo.trim().isEmpty()) {
 							Disciplina disciplina = cadDisciplina.pesquisarDisciplina(codigo.trim());
-							if(disciplina != null) {
+							if (disciplina != null) {
 								StringBuilder turmasStr = new StringBuilder();
 								for (Turma turma : disciplina.getTurmas()) {
 									turmasStr.append(turma.toString()).append("\n");
@@ -151,10 +153,10 @@ public class MenuDisciplina {
 							Disciplina disciplina = cadDisciplina.pesquisarDisciplina(codigo.trim());
 							if (disciplina != null) {
 								String codigoTurma = JOptionPane.showInputDialog("Informe o código da turma: ");
-								if(codigoTurma != null) {
+								if (codigoTurma != null) {
 									Turma t = cadTurma.pesquisarTurma(codigoTurma.trim());
 									boolean adicionou = cadDisciplina.adicionarTurma(codigo, t);
-									if(adicionou) {
+									if (adicionou) {
 										JOptionPane.showMessageDialog(null, "Turma adicionada.");
 									} else {
 										JOptionPane.showMessageDialog(null, "Erro ao adicionar turma.");
@@ -168,7 +170,7 @@ public class MenuDisciplina {
 						} else {
 							throw new CampoEmBrancoException("Codigo da disciplina nao pode ser vazio.");
 						}
-							 
+
 						break;
 
 					case 0:

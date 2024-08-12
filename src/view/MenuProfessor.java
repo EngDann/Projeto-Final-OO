@@ -31,28 +31,26 @@ public class MenuProfessor {
 		JTextField areaFormacaoField = new JTextField();
 		panel.add(areaFormacaoField);
 
-		int result;
-		do {
-			result = JOptionPane.showConfirmDialog(null, panel, "Cadastro de Novo Professor",
-					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		int result = JOptionPane.showConfirmDialog(null, panel, "Cadastro de Novo Professor",
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-			if (result == JOptionPane.OK_OPTION) {
-				String nome = nomeField.getText().trim();
-				String cpf = cpfField.getText().trim();
-				String email = emailField.getText().trim();
-				String matriculaFUB = matriculaFUBField.getText().trim();
-				String areaFormacao = areaFormacaoField.getText().trim();
+		if (result == JOptionPane.OK_OPTION) {
+			String nome = nomeField.getText().trim();
+			String cpf = cpfField.getText().trim();
+			String email = emailField.getText().trim();
+			String matriculaFUB = matriculaFUBField.getText().trim();
+			String areaFormacao = areaFormacaoField.getText().trim();
 
-				if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || matriculaFUB.isEmpty()
-						|| areaFormacao.isEmpty()) {
-					throw new CampoEmBrancoException("Todos os campos devem ser preenchidos.");
-				} else {
-					return new Professor(nome, cpf, email, matriculaFUB, areaFormacao);
-				}
+			if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || matriculaFUB.isEmpty()
+					|| areaFormacao.isEmpty()) {
+				throw new CampoEmBrancoException("Todos os campos devem ser preenchidos.");
 			} else {
-				return null;
+				return new Professor(nome, cpf, email, matriculaFUB, areaFormacao);
 			}
-		} while (result == JOptionPane.OK_OPTION);
+		} else {
+			return null;
+		}
+
 	}
 
 	public static void menuProfessor(CrudProfessores crudProfessor) throws CampoEmBrancoException {
@@ -76,10 +74,15 @@ public class MenuProfessor {
 
 				switch (opcao) {
 					case 1:
-						Professor novoProfessor = dadosNovoProfessor();
 						try {
-							crudProfessor.cadastrarProfessor(novoProfessor);
-							JOptionPane.showMessageDialog(null, "Professor cadastrado com sucesso!");
+							Professor novoProfessor = dadosNovoProfessor();
+							if (novoProfessor != null) {
+								crudProfessor.cadastrarProfessor(novoProfessor);
+								JOptionPane.showMessageDialog(null, "Professor cadastrado com sucesso!");
+							} else {
+								JOptionPane.showMessageDialog(null, "Cadastro de aluno cancelado.");
+
+							}
 						} catch (NullPointerException e) {
 							JOptionPane.showMessageDialog(null, "Algo deu errado no cadastro.", null,
 									JOptionPane.ERROR_MESSAGE);

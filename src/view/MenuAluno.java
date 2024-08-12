@@ -23,7 +23,7 @@ public class MenuAluno {
 		JTextField emailField = new JTextField();
 		panel.add(emailField);
 
-		panel.add(new JLabel("Informe a matricula do aluno:"));
+		panel.add(new JLabel("Informe a matrícula do aluno:"));
 		JTextField matriculaField = new JTextField();
 		panel.add(matriculaField);
 
@@ -31,27 +31,24 @@ public class MenuAluno {
 		JTextField cursoField = new JTextField();
 		panel.add(cursoField);
 
-		int result;
-		do {
-			result = JOptionPane.showConfirmDialog(null, panel, "Cadastro de Novo Aluno", JOptionPane.OK_CANCEL_OPTION,
-					JOptionPane.PLAIN_MESSAGE);
+		int result = JOptionPane.showConfirmDialog(null, panel, "Cadastro de Novo Aluno", JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.PLAIN_MESSAGE);
 
-			if (result == JOptionPane.OK_OPTION) {
-				String nome = nomeField.getText().trim();
-				String cpf = cpfField.getText().trim();
-				String email = emailField.getText().trim();
-				String matricula = matriculaField.getText().trim();
-				String curso = cursoField.getText().trim();
+		if (result == JOptionPane.OK_OPTION) {
+			String nome = nomeField.getText().trim();
+			String cpf = cpfField.getText().trim();
+			String email = emailField.getText().trim();
+			String matricula = matriculaField.getText().trim();
+			String curso = cursoField.getText().trim();
 
-				if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || matricula.isEmpty() || curso.isEmpty()) {
-					throw new CampoEmBrancoException("Todos os campos devem ser preenchidos.");
-				} else {
-					return new Aluno(nome, cpf, email, matricula, curso);
-				}
+			if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || matricula.isEmpty() || curso.isEmpty()) {
+				throw new CampoEmBrancoException("Todos os campos devem ser preenchidos.");
 			} else {
-				return null;
+				return new Aluno(nome, cpf, email, matricula, curso);
 			}
-		} while (result == JOptionPane.OK_OPTION);
+		} else {
+			return null;
+		}
 	}
 
 	public static void menuAluno(CrudAlunos cadAluno) throws CampoEmBrancoException {
@@ -75,11 +72,15 @@ public class MenuAluno {
 
 				switch (opcao) {
 					case 1:
-						Aluno novoAluno = dadosNovoAluno();
-						try{
+						try {
+							Aluno novoAluno = dadosNovoAluno();
+							if (novoAluno != null) {
 								cadAluno.cadastrarAluno(novoAluno);
 								JOptionPane.showMessageDialog(null, "Aluno cadastrado com sucesso!");
-						} catch(NullPointerException e){
+							} else {
+								JOptionPane.showMessageDialog(null, "Cadastro de aluno cancelado.");
+							}
+						} catch (NullPointerException e) {
 							JOptionPane.showMessageDialog(null, "Algo deu errado no cadastro.", null,
 									JOptionPane.ERROR_MESSAGE);
 							e.printStackTrace();
@@ -87,7 +88,7 @@ public class MenuAluno {
 						break;
 
 					case 2:
-						String matricula = JOptionPane.showInputDialog("Informe a matricula do aluno:");
+						String matricula = JOptionPane.showInputDialog("Informe a matrícula do aluno:");
 						if (matricula != null && !matricula.trim().isEmpty()) {
 							Aluno a = cadAluno.pesquisarAluno(matricula.trim());
 							if (a != null) {
@@ -96,12 +97,12 @@ public class MenuAluno {
 								JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
 							}
 						} else {
-							throw new CampoEmBrancoException("Matricula nao pode ser vazia.");
+							throw new CampoEmBrancoException("Matrícula não pode ser vazia.");
 						}
 						break;
 
 					case 3:
-						matricula = JOptionPane.showInputDialog("Informe a matricula do aluno:");
+						matricula = JOptionPane.showInputDialog("Informe a matrícula do aluno:");
 						if (matricula != null && !matricula.trim().isEmpty()) {
 							Aluno novoCadastro = dadosNovoAluno();
 							if (novoCadastro != null) {
@@ -113,12 +114,12 @@ public class MenuAluno {
 								}
 							}
 						} else {
-							throw new CampoEmBrancoException("Matricula nao pode ser vazia.");
-						}					
+							throw new CampoEmBrancoException("Matrícula não pode ser vazia.");
+						}
 						break;
 
 					case 4:
-						matricula = JOptionPane.showInputDialog("Informe a matricula do aluno:");
+						matricula = JOptionPane.showInputDialog("Informe a matrícula do aluno:");
 						if (matricula != null && !matricula.trim().isEmpty()) {
 							Aluno remover = cadAluno.pesquisarAluno(matricula.trim());
 							if (remover != null) {
@@ -133,7 +134,7 @@ public class MenuAluno {
 								JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
 							}
 						} else {
-							throw new CampoEmBrancoException("Matricula nao pode ser vazia.");
+							throw new CampoEmBrancoException("Matrícula não pode ser vazia.");
 						}
 						break;
 
@@ -149,4 +150,5 @@ public class MenuAluno {
 			}
 		} while (opcao != 0);
 	}
+
 }
