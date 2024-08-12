@@ -12,7 +12,7 @@ public class MenuDisciplina {
 
 	static CrudTurma cadTurma;
 
-	public static Disciplina dadosNovaDisciplina() throws CampoEmBrancoException {
+	public static Disciplina dadosNovaDisciplina(CrudDisciplina cadDisciplina) throws CampoEmBrancoException {
 		JPanel panel = new JPanel(new GridLayout(0, 2));
 
 		panel.add(new JLabel("Informe o nome da disciplina:"));
@@ -32,6 +32,9 @@ public class MenuDisciplina {
 
 			if (nome.isEmpty() || codigo.isEmpty()) {
 				throw new CampoEmBrancoException("Todos os campos devem ser preenchidos.");
+			} if(cadDisciplina.repeteCodigo(codigo)) {
+				JOptionPane.showMessageDialog(null, "O código informado já existe.");
+				return null;
 			} else {
 				return new Disciplina(nome, codigo);
 			}
@@ -64,7 +67,7 @@ public class MenuDisciplina {
 				switch (opcao) {
 					case 1:
 						try {
-							Disciplina novaDisciplina = dadosNovaDisciplina();
+							Disciplina novaDisciplina = dadosNovaDisciplina(cadDisciplina);
 							if (novaDisciplina != null) {
 								cadDisciplina.cadastrarDisciplina(novaDisciplina);
 								JOptionPane.showMessageDialog(null, "Disciplina cadastrada com sucesso!");
@@ -95,7 +98,7 @@ public class MenuDisciplina {
 					case 3:
 						codigo = JOptionPane.showInputDialog("Informe o código da disciplina:");
 						if (codigo != null && !codigo.trim().isEmpty()) {
-							Disciplina novoCadastro = dadosNovaDisciplina();
+							Disciplina novoCadastro = dadosNovaDisciplina(cadDisciplina);
 							if (novoCadastro != null) {
 								boolean atualizado = cadDisciplina.atualizarDisciplina(codigo.trim(), novoCadastro);
 								if (atualizado) {
