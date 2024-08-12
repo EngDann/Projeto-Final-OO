@@ -74,7 +74,7 @@ public class Turma {
     @Override
     public String toString() {
         String resposta = "DISCIPLINA: "
-                + (disciplina != null ? disciplina.getCodigo() + " " + disciplina.getNome() : "N/A") + "\n";
+                + (disciplina != null ? disciplina.getCodigo() + " (" + disciplina.getNome() : "N/A") + ")\n";
         resposta += "CODIGO: " + codigo + "\n";
         resposta += "QUANTIDADE DE VAGAS: " + qtdVagas + "\n";
         resposta += "NUMERO DE VAGAS LIVRES: " + qtdVagasLivres + "\n";
