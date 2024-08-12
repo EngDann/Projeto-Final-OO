@@ -8,7 +8,7 @@ import excecao.CampoEmBrancoException;
 
 public class MenuAluno {
 
-	public static Aluno dadosNovoAluno() throws CampoEmBrancoException {
+	public static Aluno dadosNovoAluno(CrudAlunos cadAluno) throws CampoEmBrancoException {
 		JPanel panel = new JPanel(new GridLayout(0, 2));
 
 		panel.add(new JLabel("Informe o nome do aluno:"));
@@ -43,6 +43,9 @@ public class MenuAluno {
 
 			if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || matricula.isEmpty() || curso.isEmpty()) {
 				throw new CampoEmBrancoException("Todos os campos devem ser preenchidos.");
+			} if(cadAluno.repeteMatricula(matricula)) {
+				JOptionPane.showMessageDialog(null, "A matrícula informada já existe");
+				return null;
 			} else {
 				return new Aluno(nome, cpf, email, matricula, curso);
 			}
@@ -50,7 +53,7 @@ public class MenuAluno {
 			return null;
 		}
 	}
-
+	
 	public static void menuAluno(CrudAlunos cadAluno) throws CampoEmBrancoException {
 		String txt = "Informe a opção desejada \n"
 				+ "1 - Cadastrar aluno\n"
@@ -73,7 +76,7 @@ public class MenuAluno {
 				switch (opcao) {
 					case 1:
 						try {
-							Aluno novoAluno = dadosNovoAluno();
+							Aluno novoAluno = dadosNovoAluno(cadAluno);
 							if (novoAluno != null) {
 								cadAluno.cadastrarAluno(novoAluno);
 								JOptionPane.showMessageDialog(null, "Aluno cadastrado com sucesso!");
@@ -104,7 +107,7 @@ public class MenuAluno {
 					case 3:
 						matricula = JOptionPane.showInputDialog("Informe a matrícula do aluno:");
 						if (matricula != null && !matricula.trim().isEmpty()) {
-							Aluno novoCadastro = dadosNovoAluno();
+							Aluno novoCadastro = dadosNovoAluno(cadAluno);
 							if (novoCadastro != null) {
 								boolean atualizado = cadAluno.atualizarAluno(matricula.trim(), novoCadastro);
 								if (atualizado) {
