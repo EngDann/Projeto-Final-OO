@@ -12,7 +12,7 @@ import excecao.DisciplinaNaoAtribuidaException;
 
 public class MenuTurma {
 
-	public static Turma dadosNovaTurma(CrudDisciplina cadDisciplina, CrudProfessores cadProfessor)
+	public static Turma dadosNovaTurma(CrudTurma cadTurma, CrudDisciplina cadDisciplina, CrudProfessores cadProfessor)
 			throws CampoEmBrancoException,
 			ProfessorNaoAtribuidoException,
 			DisciplinaNaoAtribuidaException {
@@ -58,13 +58,17 @@ public class MenuTurma {
 				throw new CampoEmBrancoException("O número de vagas deve ser maior que zero.");
 			}
 
-			if (codigoDisciplina.isEmpty()) {
+			if (codigoDisciplina.isEmpty()||cadDisciplina.pesquisarDisciplina(codigoDisciplina)==null) {
 				throw new DisciplinaNaoAtribuidaException(
 						"É obrigatorio uma disciplina para completar o cadastro.");
 			}
-			if (matriculaProfessor.isEmpty()) {
+			if (matriculaProfessor.isEmpty()||cadProfessor.pesquisarProfessor(matriculaProfessor)==null) {
 				throw new ProfessorNaoAtribuidoException(
 						"É obrigatorio um professor associado para completar o cadastro.");
+			}
+			if (cadTurma.repeteCodigo(codigo)) {
+				JOptionPane.showMessageDialog(null, "O código de turma informado já existe.");
+				return null;
 			}
 
 			return new Turma(codigo, codigoDisciplina, matriculaProfessor, qtdVagas, cadDisciplina, cadProfessor);
@@ -101,10 +105,11 @@ public class MenuTurma {
 				switch (opcao) {
 					case 1:
 						try {
-							Turma novaTurma = dadosNovaTurma(cadDisciplina, cadProfessor);
+							Turma novaTurma = dadosNovaTurma(crudTurma, cadDisciplina, cadProfessor);
 							if (novaTurma != null) {
 								crudTurma.cadastrarTurma(novaTurma);
 								JOptionPane.showMessageDialog(null, "Turma cadastrada com sucesso!");
+								cadDisciplina.adicionarTurma(novaTurma.getDisciplina().getCodigo(), novaTurma);
 							} else {
 								JOptionPane.showMessageDialog(null, "Cadastro de turma cancelado.");
 							}
@@ -132,11 +137,12 @@ public class MenuTurma {
 					case 3:
 						codigo = JOptionPane.showInputDialog("Informe o código da turma:");
 						if (codigo != null && !codigo.trim().isEmpty()) {
-							Turma novoCadastro = dadosNovaTurma(cadDisciplina, cadProfessor);
+							Turma novoCadastro = dadosNovaTurma(crudTurma, cadDisciplina, cadProfessor);
 							if (novoCadastro != null) {
 								boolean atualizado = crudTurma.atualizarTurma(codigo.trim(), novoCadastro);
 								if (atualizado) {
 									JOptionPane.showMessageDialog(null, "Turma atualizada.");
+									cadDisciplina.adicionarTurma(novoCadastro.getDisciplina().getCodigo(), novoCadastro);
 								} else {
 									JOptionPane.showMessageDialog(null, "Turma não encontrada.");
 								}
