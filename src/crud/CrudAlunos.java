@@ -47,4 +47,12 @@ public class CrudAlunos {
 		}
 		return false;
 	}
+	public boolean repeteMatricula(String mat){
+		for(Aluno a : alunos) {
+			if(a.getMatricula().trim().equalsIgnoreCase(mat)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
