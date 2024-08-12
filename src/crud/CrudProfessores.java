@@ -2,6 +2,7 @@ package crud;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import app.Professor;
 
 public class CrudProfessores {
@@ -42,6 +43,14 @@ public class CrudProfessores {
 		for (int i = 0; i < professores.size(); i++) {
 			if (professores.get(i).getMatriculaFUB().equalsIgnoreCase(matriculaFUB)) {
 				professores.set(i, novoProfessor);
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean repeteMatriculaFUB(String matFUB){
+		for(Professor p : professores) {
+			if(p.getMatriculaFUB().trim().equalsIgnoreCase(matFUB)) {
 				return true;
 			}
 		}
