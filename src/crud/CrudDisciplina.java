@@ -2,6 +2,7 @@ package crud;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import app.Disciplina;
 import app.Turma;
 
@@ -55,6 +56,15 @@ public class CrudDisciplina {
 			disciplina.adicionarTurma(turma);
 			turma.setDisciplina(disciplina);
 			return true;
+		}
+		return false;
+	}
+	
+	public boolean repeteCodigo(String cod){
+		for(Disciplina d : disciplinas) {
+			if(d.getCodigo().trim().equalsIgnoreCase(cod)) {
+				return true;
+			}
 		}
 		return false;
 	}
