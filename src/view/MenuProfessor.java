@@ -8,7 +8,7 @@ import excecao.CampoEmBrancoException;
 
 public class MenuProfessor {
 
-	public static Professor dadosNovoProfessor() throws CampoEmBrancoException {
+	public static Professor dadosNovoProfessor(CrudProfessores cadProfessor) throws CampoEmBrancoException {
 		JPanel panel = new JPanel(new GridLayout(0, 2));
 
 		panel.add(new JLabel("Informe o nome do professor:"));
@@ -44,7 +44,11 @@ public class MenuProfessor {
 			if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || matriculaFUB.isEmpty()
 					|| areaFormacao.isEmpty()) {
 				throw new CampoEmBrancoException("Todos os campos devem ser preenchidos.");
-			} else {
+			} if(cadProfessor.repeteMatriculaFUB(matriculaFUB)) {
+				JOptionPane.showMessageDialog(null, "A matrícula FUB informada já existe.");
+				return null;
+			}
+			else {
 				return new Professor(nome, cpf, email, matriculaFUB, areaFormacao);
 			}
 		} else {
@@ -75,7 +79,7 @@ public class MenuProfessor {
 				switch (opcao) {
 					case 1:
 						try {
-							Professor novoProfessor = dadosNovoProfessor();
+							Professor novoProfessor = dadosNovoProfessor(crudProfessor);
 							if (novoProfessor != null) {
 								crudProfessor.cadastrarProfessor(novoProfessor);
 								JOptionPane.showMessageDialog(null, "Professor cadastrado com sucesso!");
@@ -107,7 +111,7 @@ public class MenuProfessor {
 					case 3:
 						matriculaFUB = JOptionPane.showInputDialog("Informe a matrícula FUB do professor:");
 						if (matriculaFUB != null && !matriculaFUB.trim().isEmpty()) {
-							Professor novoCadastro = dadosNovoProfessor();
+							Professor novoCadastro = dadosNovoProfessor(crudProfessor);
 							if (novoCadastro != null) {
 								boolean atualizado = crudProfessor.atualizarProfessor(matriculaFUB.trim(),
 										novoCadastro);
