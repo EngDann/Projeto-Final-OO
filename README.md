@@ -32,7 +32,7 @@ Aplicar conceitos de Herança e Polimorfismo em um sistema de gestão acadêmica
 ## UML do Projeto
 ![image](https://github.com/user-attachments/assets/50710d16-672f-411e-8385-2cde4490954c)
 ![image](https://github.com/user-attachments/assets/a9bc3cb8-4348-4e0a-b5db-4bc409b0ab26)
-![image](https://github.com/user-attachments/assets/e3b5f9d2-07ee-46f1-8d91-7403bcea4db3)
+![Diagrama sem nome drawio (1)](https://github.com/user-attachments/assets/e75c67a6-f131-4af3-8922-1b60a1d5489b)
 
 
 ---
