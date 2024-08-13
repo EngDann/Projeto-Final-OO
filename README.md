@@ -23,6 +23,11 @@ Aplicar conceitos de Herança e Polimorfismo em um sistema de gestão acadêmica
 
 1. Clone o repositório.
 2. Compile e execute o projeto utilizando um ambiente Java.
+3. Siga os passos dos paínes de acordo com que deseja
+![image](https://github.com/user-attachments/assets/4ed5bc42-ffea-42db-9f92-270cb4c59462)
+4. Preencha com os respectivos valores
+![image](https://github.com/user-attachments/assets/b669d71f-d6de-4078-a17c-4688ad1f6ec5)
+
 
 ## UML do Projeto
 ![image](https://github.com/user-attachments/assets/50710d16-672f-411e-8385-2cde4490954c)
